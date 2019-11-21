@@ -1,7 +1,5 @@
-
 from kivy.config import Config
 Config.set('kivy','window_icon', "")
-
 
 from kivy.app import App
 from kivy.uix.widget import Widget
@@ -11,6 +9,7 @@ from kivy.uix.screenmanager import (ScreenManager, Screen, NoTransition,
 SlideTransition, CardTransition, SwapTransition, 
 FadeTransition, WipeTransition, FallOutTransition, RiseInTransition)
 from kivy.uix.progressbar import ProgressBar
+from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
 from Dates2Hours import D2Hfx
 from decimal import *
@@ -36,8 +35,65 @@ from decimal import *
 Builder.load_string(""" 
 <FPH>: 
     name: "Home" 
-    # Button:
-    #     text: 'Home1'   
+    BoxLayout: 
+        orientation: 'vertical'
+        NavBar_ActionBar:
+            id: ActionBar
+        Button:
+            text: 'Home1'   
+        Button:
+            text: "h2"
+<NavBar_ActionBar@ActionBar>:
+    ActionView:
+        id: ActionView
+        
+        HiddenIcon_ActionPrevious:
+
+        ActionGroup:
+            id: App_ActionGroup
+            mode: 'spinner'
+            text: 'Jump to Screen'
+
+            ActionButton:
+                text: 'Crime Prediction'
+                on_release: app.root.ids.sm.current = 'second'
+            ActionButton:
+                text: 'Forum'
+                on_release:  app.root.ids.sm.current = 'second'
+            ActionButton:
+                text: 'Probable Suspect'
+                on_release:  app.root.ids.sm.current = 'second'
+
+        ActionGroup:
+            id: App_ActionGroup
+            mode: 'spinner'
+            text: 'App'
+
+            ActionButton:
+                text: 'Settings'
+                on_press: app.open_settings()
+            ActionButton:
+                text: 'Quit'
+                on_press: app.get_running_app().stop()
+
+        ActionGroup:
+            id: File_ActionGroup
+            mode: 'spinner'
+            text: 'File'
+
+            ActionButton:
+                text: 'Open'
+            ActionButton:
+                text: 'Save'
+                
+<HiddenIcon_ActionPrevious@ActionPrevious>:
+    title: ''   # app.title if app.title is not None else 'Action Previous'
+    with_previous: False
+    app_icon: ''
+    app_icon_width: 0
+    app_icon_height: 0
+    size_hint_x: None
+    width: len(self.title) * 10
 
 <d2h>: 
     Button:
