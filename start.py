@@ -43,6 +43,9 @@ Builder.load_string("""
             text: 'Home1'   
         Button:
             text: "h2"
+# <root>:
+#     id: sm
+    
 <NavBar_ActionBar@ActionBar>:
     ActionView:
         id: ActionView
@@ -52,11 +55,10 @@ Builder.load_string("""
         ActionGroup:
             id: App_ActionGroup
             mode: 'spinner'
-            text: 'Jump to Screen'
-
+            text: 'Apps'
             ActionButton:
-                text: 'Crime Prediction'
-                on_release: app.root.ids.sm.current = 'second'
+                text: 'Dates To Hours'
+                on_release: root.current = 'D2HA'
             ActionButton:
                 text: 'Forum'
                 on_release:  app.root.ids.sm.current = 'second'
@@ -85,7 +87,7 @@ Builder.load_string("""
                 text: 'Open'
             ActionButton:
                 text: 'Save'
-                
+
 <HiddenIcon_ActionPrevious@ActionPrevious>:
     title: ''   # app.title if app.title is not None else 'Action Previous'
     with_previous: False
@@ -95,16 +97,17 @@ Builder.load_string("""
     size_hint_x: None
     width: len(self.title) * 10
 
-<d2h>: 
+<D2H>: 
+    # id: 'D2HA'
     Button:
         text: 'D2H'
-    BoxLayout:
-        Label:
-            text: 'Home'
-        Button: 
-            text: 'a'
-        Button:
-            text: 'b'
+    # 
+    #     Label:
+    #         text: 'Home'
+    #     Button: 
+    #         text: 'a'
+    #     Button:
+    #         text: 'b'
         
 <Screen3>: 
     Button:
@@ -133,7 +136,7 @@ class FPH(Screen): #Home Page
     pass
 class D2H(Screen): #Calculate dates/hours to be funded in a range
     pass
-class Screen3(Screen): #Calculate materiels
+class Screen3(Screen): #Calculate material costs
     pass
 class Screen4(Screen): #Keys Input
     pass
@@ -161,9 +164,9 @@ class FPR(App):
         #     'Scatter', 'Splitter', 'TabbedPanel + Layouts', 'RstDocument',
         #     'Popups', 'ScreenManager'])
             
-        root = ScreenManager(transition=CardTransition())
+        root = ScreenManager( transition=CardTransition())
         root.add_widget(FPH(name='FinancialProgramHome'))
-        root.add_widget(D2H(name='d2h')) # name is how to navigate
+        root.add_widget(D2H(name='D2HA')) # name is how to navigate
         root.add_widget(Screen3(name='Screen3'))
         root.add_widget(Screen4(name='Screen4'))
         root.add_widget(Screen5(name='Screen5'))
