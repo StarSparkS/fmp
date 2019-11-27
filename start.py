@@ -11,8 +11,9 @@ FadeTransition, WipeTransition, FallOutTransition, RiseInTransition)
 from kivy.uix.progressbar import ProgressBar
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
-from Dates2Hours import D2Hfx
+from Dates2Hours import D2Hfx, AM
 from decimal import *
+from kivy.uix.textinput import TextInput
 
 # # class Wid(Widget):
 # # #   Button(text='Begin')
@@ -30,63 +31,110 @@ from decimal import *
 #     val = D2Hfx(0, 1, .5)
 #     print(val)
 #     return 0
-
-
+# def AM():
+#     print("Hello")
+    
 Builder.load_string(""" 
 <FPH>: 
-    name: "Home" 
-    BoxLayout: 
+    id: fz
+    # ScreenManager:
+    #     id: rt
+    BoxLayout:
         orientation: 'vertical'
         NavBar_ActionBar:
             id: ActionBar
         Button:
-            text: 'Home1'   
+            text: 'Financial Program Home'
+            on_release: fz.ast2()
         Button:
-            text: "h2"
-# <root>:
-#     id: sm
+            text: 'Financial Program Home'
+            on_release: app.ast()
+        Button:
+            text: 'Progress Bar Test'
+            on_release: app.pbaru()
+        Label:
+            id:lls
+            text: "Test"
+        # Label:
+        #     text: 'Progression: {}%'.format(int(pb.value))
+        #     size_hint_y: None
     
+        #     height: '48dp'
+        ProgressBar:
+            id: pb
+            size_hint_x: 1
+            size_hint_y: None
+            height: '48dp'
+            value: 0
+            # value: (fz.bar() * 10) % 100
+    # <root>:
+    #     id: sm
+          
 <NavBar_ActionBar@ActionBar>:
+    # manager: rt
     ActionView:
         id: ActionView
-        
+        use_separator: True
         HiddenIcon_ActionPrevious:
+        ActionGroup:
+            id: App_ActionGroup
+            mode: 'spinner'
+            text: 'NAV'
+            ActionButton:
+                text: 'Home'
+                on_release: app.root.current = 'FinancialProgramHome'
+            ActionButton:
+                text: 'DatesToHours'
+                on_release: app.root.current = 'D2HA'
+            ActionButton:
+                text: 'APP 2 TBD'
+                on_release:  app.root.current = 'A2'
+            ActionButton:
+                text: 'APP 3 TBD'
+                on_release:  app.root.current = 'A3'
+            ActionButton:
+                text: 'APP 4 TBD'
+                on_release:  app.root.current = 'A4'
+            ActionButton:
+                text: 'APP 5 TBD'
+                on_release:  app.root.current = 'A5'
+            ActionButton:
+                text: 'APP 6 TBD'
+                on_release:  app.root.current = 'A6'
+            ActionButton:
+                text: 'APP 7 TBD'
+                on_release:  app.root.current = 'A7'
+            ActionButton:
+                text: 'APP 8 TBD'
+                on_release:  app.root.current = 'A8'
+            ActionButton:
+                text: 'CREDITS'
+                on_release:  app.root.current = 'CRR'
 
         ActionGroup:
             id: App_ActionGroup
             mode: 'spinner'
-            text: 'Apps'
+            text: 'SETTINGS'
             ActionButton:
-                text: 'Dates To Hours'
-                on_release: root.current = 'D2HA'
-            ActionButton:
-                text: 'Forum'
-                on_release:  app.root.ids.sm.current = 'second'
-            ActionButton:
-                text: 'Probable Suspect'
-                on_release:  app.root.ids.sm.current = 'second'
-
-        ActionGroup:
-            id: App_ActionGroup
-            mode: 'spinner'
-            text: 'App'
-
-            ActionButton:
-                text: 'Settings'
+                text: 'App Settings'
                 on_press: app.open_settings()
             ActionButton:
-                text: 'Quit'
-                on_press: app.get_running_app().stop()
-
-        ActionGroup:
-            id: File_ActionGroup
-            mode: 'spinner'
-            text: 'File'
-
-            ActionButton:
-                text: 'Open'
-            ActionButton:
-                text: 'Save'
+                text: 'TBD'
+            # ActionButton:
+            #     text: 'Quit'
+            #     on_press: app.get_running_app().stop()
+        # ActionGroup:
+        #     id: File_ActionGroup
+        #     mode: 'spinner'
+        #     text: 'TBD FILE OPS'
+        #     ActionButton:
+        #         text: 'Open'
+        #     ActionButton:
+        #         text: 'Save'
+        ActionButton:
+            text: 'EXIT'
+            on_press: app.get_running_app().stop()
+       
 
 <HiddenIcon_ActionPrevious@ActionPrevious>:
     title: ''   # app.title if app.title is not None else 'Action Previous'
@@ -99,8 +147,55 @@ Builder.load_string("""
 
 <D2H>: 
     # id: 'D2HA'
-    Button:
-        text: 'D2H'
+
+    BoxLayout: 
+        orientation: 'vertical'
+        NavBar_ActionBar:
+            id: ActionBar
+        BoxLayout:
+            orientation: 'vertical'
+            # Button: 
+            #     text:'a'
+            #     size_hint: (.5,.35)
+            #     pos_hint: {'x': .33, 'y': .2}
+            TextInput:
+                size_hint: (.3,.3)
+                text: 'Enter Start Date (MM/DD/YYYY)'
+                multiline: False
+                id: startDateInput
+                # bind:
+                #     on_text_validate: app.process()
+                # self.bind(on_text_validate:on_enter)
+            # TextInput:
+            #     size_hint: (.3,.3)
+            #     text: 'Enter optional Date (MM/DD/YYYY)'
+            #     multiline: False
+            #     id: startDateInput
+            #     # self.bind(on_text_validate:on_enter)
+            TextInput:
+                size_hint: (.3,.3)
+                text: 'Enter End Date (MM/DD/YYYY)'
+                multiline: False
+                id: startDateInput
+                # self.bind(on_text_validate:on_enter)
+            # startDateInput = TextInput(text='Enter Start Date (MM/DD/YYYY)')//, multiline=False)
+            # startDateInput.bind(on_text_validate=on_enter)
+            # start
+            Button:
+                text: 'Calculate Work Days in Between'
+                size_hint: (.3,.3)
+            Button:
+                text:'b' 
+                size_hint: (.3,.3)  
+        ProgressBar:
+            id: pb
+            size_hint_x: 1
+            size_hint_y: None
+            height: '48dp'
+            value: 20
+            # app.pbaru()
+            # value: 0
+            # value: (fz.bar() * 10) % 100
     # 
     #     Label:
     #         text: 'Home'
@@ -109,34 +204,122 @@ Builder.load_string("""
     #     Button:
     #         text: 'b'
         
-<Screen3>: 
-    Button:
-        text: 'Screen3'
+<S3A2>: 
+    BoxLayout: 
+        orientation: 'vertical'
+        NavBar_ActionBar:
+            id: ActionBar
+        Button:
+            text: 'Screen3 (App 2) TBD'
+        ProgressBar:
+            id: pb
+            size_hint_x: 1
+            size_hint_y: None
+            height: '48dp'
+            value: 30
 <Screen4>: 
-    Button:
-        text: 'Screen4'
+    BoxLayout: 
+        orientation: 'vertical'
+        NavBar_ActionBar:
+            id: ActionBar
+        Button:
+            text: 'Screen4 (App 3) TBD'
+        ProgressBar:
+            id: pb
+            size_hint_x: 1
+            size_hint_y: None
+            height: '48dp'
+            value: 40
 <Screen5>: 
-    Button:
-        text: 'Screen5'
+    BoxLayout: 
+        orientation: 'vertical'
+        NavBar_ActionBar:
+            id: ActionBar
+        Button:
+            text: 'Screen5 (App 4) TBD'
+        ProgressBar:
+            id: pb
+            size_hint_x: 1
+            size_hint_y: None
+            height: '48dp'
+            value: 50
 <Screen6>: 
-    Button:
-        text: 'Screen6'
+    BoxLayout: 
+        orientation: 'vertical'
+        NavBar_ActionBar:
+            id: ActionBar
+        Button:
+            text: 'Screen6 (App 5) TBD'
+        ProgressBar:
+            id: pb
+            size_hint_x: 1
+            size_hint_y: None
+            height: '48dp'
+            value: 60
 <Screen7>: 
-    Button:
-        text: 'Screen7'
+    BoxLayout: 
+        orientation: 'vertical'
+        NavBar_ActionBar:
+            id: ActionBar
+        Button:
+            text: 'Screen7 (App 6) TBD'
+        ProgressBar:
+            id: pb
+            size_hint_x: 1
+            size_hint_y: None
+            height: '48dp'
+            value: 70
 <Screen8>: 
-    Button:
-        text: 'Screen8'
+    BoxLayout: 
+        orientation: 'vertical'
+        NavBar_ActionBar:
+            id: ActionBar
+        Button:
+            text: 'Screen8 (App 7) TBD'
+        ProgressBar:
+            id: pb
+            size_hint_x: 1
+            size_hint_y: None
+            height: '48dp'
+            value: 80
+<Screen9>: 
+    BoxLayout: 
+        orientation: 'vertical'
+        NavBar_ActionBar:
+            id: ActionBar
+        Button:
+            text: 'Screen9 (App 8) TBD'
+        ProgressBar:
+            id: pb
+            size_hint_x: 1
+            size_hint_y: None
+            height: '48dp'
+            value: 90
+<CRS>
+    BoxLayout: 
+        orientation: 'vertical'
+        NavBar_ActionBar:
+            id: ActionBar
+        Button:
+            text: 'CREDITS TBD'
+        ProgressBar:
+            id: pb
+            size_hint_x: 1
+            size_hint_y: None
+            height: '48dp'
+            value: 100
 """)
 
 #
 #Class Declaration
 #
 class FPH(Screen): #Home Page
-    pass
+    def ast2(self):
+        self.ids.lls.text = "gotcha"
+    # pass
 class D2H(Screen): #Calculate dates/hours to be funded in a range
     pass
-class Screen3(Screen): #Calculate material costs
+class S3A2(Screen): #Calculate material costs
     pass
 class Screen4(Screen): #Keys Input
     pass
@@ -148,13 +331,65 @@ class Screen7(Screen): #Cost with Fees
     pass
 class Screen8(Screen): #Budget Estimator
     pass
+class Screen9(Screen): #??
+    pass
+class CRS(Screen): #CREDITS
+    pass
 
+# cl
+rt = ScreenManager( transition=FadeTransition(duration=.5))
+rt.add_widget(FPH(name='FinancialProgramHome'))
+rt.add_widget(D2H(name='D2HA')) # name is how to navigate
+rt.add_widget(S3A2(name='A2'))
+rt.add_widget(Screen4(name='A3'))
+rt.add_widget(Screen5(name='A4'))
+rt.add_widget(Screen6(name='A5'))
+rt.add_widget(Screen7(name='A6'))
+rt.add_widget(Screen8(name='A7'))
+rt.add_widget(Screen9(name='A8'))
+rt.add_widget(CRS(name='CRR'))
 #main App
 class FPR(App):
+    from Dates2Hours import D2Hfx, AM
     # icon = 'PFPICON.ico'
+    global pbar
+    D2HSD = 0
+    D2HED = 0
+    # = 0
+    pbar =0
+    # def datevalidator(self):
+    def pbaru(self):
+        global pbar
+        if(pbar < 100):
+            pbar +=10
+            self.root.get_screen('FinancialProgramHome').ids.pb.value = pbar
+        else:
+            
+            pbar = 0
+            self.root.get_screen('FinancialProgramHome').ids.pb.value = pbar
+        return
+
+    def pbar2(self):
+        global pbar
+        if(pbar < 100):
+            pbar +=10
+            # self.root.get_screen('FinancialProgramHome').ids.pb.value = pbar
+        else:
+            
+            pbar = 0
+            # self.root.get_screen('FinancialProgramHome').ids.pb.value = pbar
+        return pbar
+        
+        # return pbar
+
+    def ast(self):
+        self.root.get_screen('FinancialProgramHome').ids.lls.text = "more"
+        # rt.get_screen('A3')
+
+        return
     def build(self):
-        # self.icon = ""
-        self.title = 'Project Financial Program'
+        # self.icon = 'PFPICON.ico'
+        self.title = 'Project Financial Program (PFP)'
         
         # self.screens = {}
         # self.available_screens = sorted([
@@ -164,17 +399,10 @@ class FPR(App):
         #     'Scatter', 'Splitter', 'TabbedPanel + Layouts', 'RstDocument',
         #     'Popups', 'ScreenManager'])
             
-        root = ScreenManager( transition=CardTransition())
-        root.add_widget(FPH(name='FinancialProgramHome'))
-        root.add_widget(D2H(name='D2HA')) # name is how to navigate
-        root.add_widget(Screen3(name='Screen3'))
-        root.add_widget(Screen4(name='Screen4'))
-        root.add_widget(Screen5(name='Screen5'))
-        root.add_widget(Screen6(name='Screen6'))
-        root.add_widget(Screen7(name='Screen7'))
-        root.add_widget(Screen8(name='Screen8'))
-        self.get_application_icon()
-        return root
+    
+        # self.get_application_icon()
+
+        return rt
 
 if __name__ == '__main__':
     FPR().run()
