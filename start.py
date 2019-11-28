@@ -153,40 +153,74 @@ Builder.load_string("""
         NavBar_ActionBar:
             id: ActionBar
         BoxLayout:
-            orientation: 'vertical'
-            # Button: 
-            #     text:'a'
-            #     size_hint: (.5,.35)
-            #     pos_hint: {'x': .33, 'y': .2}
-            TextInput:
-                size_hint: (.3,.3)
-                text: 'Enter Start Date (MM/DD/YYYY)'
-                multiline: False
-                id: startDateInput
-                # bind:
-                #     on_text_validate: app.process()
-                # self.bind(on_text_validate:on_enter)
+            orientation: 'horizontal'
+            BoxLayout: 
+                orientation: 'vertical'
+                TextInput:
+                    size_hint: (1,.1)
+                    text: 'Enter Start Date (MM/DD/YYYY)'
+                    multiline: False
+                    id: startDateInput
+                TextInput:
+                    size_hint: (1,.1)
+                    text: 'Enter End Date (MM/DD/YYYY)'
+                    multiline: False
+                    id: startDateInput
+                Button:
+                    text: 'Calculate Work Days in Between'
+                    size_hint: (1,.2)
+                Label:
+                    text:'Work Days : ' 
+                    size_hint: (1,.2) 
+                Label:
+                    text:'Hours : ' 
+                    size_hint: (1,.2) 
+                # Label:
+                #     text:'Hours : ' 
+                #     size_hint: (1,.3) 
+            BoxLayout: 
+                orientation: 'vertical'
+                TextInput:
+                    size_hint: (.5,.1)
+                    text: 'Enter Start Date (MM/DD/YYYY)'
+                    multiline: False
+                    id: startDateInput
+            # # Button: 
+            # #     text:'a'
+            # #     size_hint: (.5,.35)
+            # #     pos_hint: {'x': .33, 'y': .2}
+            # TextInput:
+            #     size_hint: (.5,.1)
+            #     text: 'Enter Start Date (MM/DD/YYYY)'
+            #     multiline: False
+            #     id: startDateInput
+            #     # bind:
+            #     #     on_text_validate: app.process()
+            #     # self.bind(on_text_validate:on_enter)
+            # # TextInput:
+            # #     size_hint: (.3,.3)
+            # #     text: 'Enter optional Date (MM/DD/YYYY)'
+            # #     multiline: False
+            # #     id: startDateInput
+            # #     # self.bind(on_text_validate:on_enter)
             # TextInput:
             #     size_hint: (.3,.3)
-            #     text: 'Enter optional Date (MM/DD/YYYY)'
+            #     text: 'Enter End Date (MM/DD/YYYY)'
             #     multiline: False
             #     id: startDateInput
             #     # self.bind(on_text_validate:on_enter)
-            TextInput:
-                size_hint: (.3,.3)
-                text: 'Enter End Date (MM/DD/YYYY)'
-                multiline: False
-                id: startDateInput
-                # self.bind(on_text_validate:on_enter)
-            # startDateInput = TextInput(text='Enter Start Date (MM/DD/YYYY)')//, multiline=False)
-            # startDateInput.bind(on_text_validate=on_enter)
-            # start
-            Button:
-                text: 'Calculate Work Days in Between'
-                size_hint: (.3,.3)
-            Button:
-                text:'b' 
-                size_hint: (.3,.3)  
+            # # startDateInput = TextInput(text='Enter Start Date (MM/DD/YYYY)')//, multiline=False)
+            # # startDateInput.bind(on_text_validate=on_enter)
+            # # start
+            # Button:
+            #     text: 'Calculate Work Days in Between'
+            #     size_hint: (.3,.3)
+            # Label:
+            #     text:'WorkDays: ' 
+            #     size_hint: (.3,.3)  
+            # Button:
+            #     text: 'T3'
+            
         ProgressBar:
             id: pb
             size_hint_x: 1
@@ -337,7 +371,7 @@ class CRS(Screen): #CREDITS
     pass
 
 # cl
-rt = ScreenManager( transition=FadeTransition(duration=.5))
+rt = ScreenManager( transition=FadeTransition(duration=.25))
 rt.add_widget(FPH(name='FinancialProgramHome'))
 rt.add_widget(D2H(name='D2HA')) # name is how to navigate
 rt.add_widget(S3A2(name='A2'))
