@@ -146,8 +146,7 @@ Builder.load_string("""
     width: len(self.title) * 10
 
 <D2H>: 
-    # id: 'D2HA'
-
+    id: drf
     BoxLayout: 
         orientation: 'vertical'
         NavBar_ActionBar:
@@ -156,71 +155,93 @@ Builder.load_string("""
             orientation: 'horizontal'
             BoxLayout: 
                 orientation: 'vertical'
+                size_hint: (.5,1)
                 TextInput:
                     size_hint: (1,.1)
                     text: 'Enter Start Date (MM/DD/YYYY)'
                     multiline: False
                     id: startDateInput
+                    # on_focus: self.text = ""
+                    on_focus: drf.SDI(self, 1)
                 TextInput:
                     size_hint: (1,.1)
                     text: 'Enter End Date (MM/DD/YYYY)'
                     multiline: False
-                    id: startDateInput
-                Button:
-                    text: 'Calculate Work Days in Between'
-                    size_hint: (1,.2)
-                Label:
-                    text:'Work Days : ' 
-                    size_hint: (1,.2) 
-                Label:
-                    text:'Hours : ' 
-                    size_hint: (1,.2) 
-                # Label:
-                #     text:'Hours : ' 
-                #     size_hint: (1,.3) 
+                    id: startDateInput2
+                    on_focus: self.text = ""
+                Label: 
+                    size_hint: (1,.1)
+                    text: 'Pick annual hours (will be divided by 2088) for %' 
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: (1, .1)
+                    CheckBox:
+                        text: '1'
+                        size_hint: (1, .1)
+                        group: 'YH'
+                    CheckBox:
+                        text: '2'
+                        size_hint: (.5, .1)
+                        group: 'YH'
+                   
+                #         BoxLayout:
+                #             orientation: 'vertical'
+                #             # size_hint: (1, 1)
+                         
+                            # CheckBox:
+                            #     text: '3'
+                            #     size_hint: (.9, 1)
+                            #     group: 'YH'
+                            # CheckBox:
+                            #     text: '4'
+                            #     size_hint: (.9, 1)
+                            #     group: 'YH'
+                            # CheckBox:
+                            #     text: '5'
+                            #     size_hint: (.9, 1)
+                            #     group: 'YH'
+                Label: 
+                    size_hint: (1,.1)
+                    text: 'Not full time? Use FT Ratio (0 - 100%)'
+                        
+                    # BoxLayout:
+                    #     orientation: 'vertical'
+                    #     Label:
+                    #         text: '1880 HRS'
+                    #         size_hint: (.1,.1)
+                    #     Label:
+                    #         text: '1920 HRS'
+                    #         size_hint: (.1,.1)
+                    #     Label:
+                    #         text: '1960 HRS'
+                    #         size_hint: (.1,.1)
+                    #     Label:
+                    #         text: '2000 HRS'
+                    #         size_hint: (.1,.1)
+                    #     Label:
+                    #         text: '2088 HRS'
+                    #         size_hint: (.1,.1)            
             BoxLayout: 
                 orientation: 'vertical'
-                TextInput:
-                    size_hint: (.5,.1)
-                    text: 'Enter Start Date (MM/DD/YYYY)'
-                    multiline: False
-                    id: startDateInput
-            # # Button: 
-            # #     text:'a'
-            # #     size_hint: (.5,.35)
-            # #     pos_hint: {'x': .33, 'y': .2}
-            # TextInput:
-            #     size_hint: (.5,.1)
-            #     text: 'Enter Start Date (MM/DD/YYYY)'
-            #     multiline: False
-            #     id: startDateInput
-            #     # bind:
-            #     #     on_text_validate: app.process()
-            #     # self.bind(on_text_validate:on_enter)
-            # # TextInput:
-            # #     size_hint: (.3,.3)
-            # #     text: 'Enter optional Date (MM/DD/YYYY)'
-            # #     multiline: False
-            # #     id: startDateInput
-            # #     # self.bind(on_text_validate:on_enter)
-            # TextInput:
-            #     size_hint: (.3,.3)
-            #     text: 'Enter End Date (MM/DD/YYYY)'
-            #     multiline: False
-            #     id: startDateInput
-            #     # self.bind(on_text_validate:on_enter)
-            # # startDateInput = TextInput(text='Enter Start Date (MM/DD/YYYY)')//, multiline=False)
-            # # startDateInput.bind(on_text_validate=on_enter)
-            # # start
-            # Button:
-            #     text: 'Calculate Work Days in Between'
-            #     size_hint: (.3,.3)
-            # Label:
-            #     text:'WorkDays: ' 
-            #     size_hint: (.3,.3)  
-            # Button:
-            #     text: 'T3'
-            
+                size_hint: (.5,1)
+                Button:
+                    halign: 'left'
+                    text: 'Calculate Work Days in Between'
+                    size_hint: (1,.1625)
+                Label:
+                    halign: 'left'
+                    text:'Work Days (RAW) : ' 
+                    size_hint: (1,.2) 
+                Label:
+                    halign: 'left'
+                    text:'Work Days (ADJ) (based on hours chosen per year): ' 
+                    size_hint: (1,.2) 
+                Label:
+                    text:'Hours (RAW) : ' 
+                    size_hint: (1,.2) 
+                Label:
+                    text:'Hours (ADJ) (based on FT Ratio) ' 
+                    size_hint: (1,.2) 
         ProgressBar:
             id: pb
             size_hint_x: 1
@@ -230,14 +251,6 @@ Builder.load_string("""
             # app.pbaru()
             # value: 0
             # value: (fz.bar() * 10) % 100
-    # 
-    #     Label:
-    #         text: 'Home'
-    #     Button: 
-    #         text: 'a'
-    #     Button:
-    #         text: 'b'
-        
 <S3A2>: 
     BoxLayout: 
         orientation: 'vertical'
@@ -351,8 +364,24 @@ class FPH(Screen): #Home Page
     def ast2(self):
         self.ids.lls.text = "gotcha"
     # pass
+
+#
+# every action creates a dynamic screen?
+#     
 class D2H(Screen): #Calculate dates/hours to be funded in a range
-    pass
+    # def on_focus(instance, value):
+    SDI_valid = 0
+    EDI_valid = 0
+    def SDI(self, *args):   
+        if (self.ids.startDateInput.focus):
+            self.ids.startDateInput.text = ""
+            self.ids.lcheck.text = "focused"
+        else:
+            if(len(self.ids.startDateInput.text) == 10):
+                self.ids.lcheck.text = "Length Correct"
+            else:
+                self.ids.lcheck.text = "Not Focused"
+    # pass
 class S3A2(Screen): #Calculate material costs
     pass
 class Screen4(Screen): #Keys Input
@@ -421,6 +450,7 @@ class FPR(App):
         # rt.get_screen('A3')
 
         return
+    
     def build(self):
         # self.icon = 'PFPICON.ico'
         self.title = 'Project Financial Program (PFP)'
