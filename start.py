@@ -173,16 +173,18 @@ Builder.load_string("""
                     size_hint: (1,.1)
                     text: 'Pick annual hours (will be divided by 2088) for %' 
                 BoxLayout:
-                    orientation: 'horizontal'
-                    size_hint: (1, .1)
-                    CheckBox:
-                        text: '1'
-                        size_hint: (1, .1)
-                        group: 'YH'
-                    CheckBox:
-                        text: '2'
-                        size_hint: (.5, .1)
-                        group: 'YH'
+                    size_hint_y: None
+                    height: '48dp'
+                    Label:
+                        text: 'Hours'
+                    Slider:
+                        id: s2
+                        step: 8
+                        min: 1880
+                        max: 2088
+                    Label:
+                        text: '{}'.format(s2.value)
+
                    
                 #         BoxLayout:
                 #             orientation: 'vertical'
@@ -203,35 +205,37 @@ Builder.load_string("""
                 Label: 
                     size_hint: (1,.1)
                     text: 'Not full time? Use FT Ratio (0 - 100%)'
-                        
-                    # BoxLayout:
-                    #     orientation: 'vertical'
-                    #     Label:
-                    #         text: '1880 HRS'
-                    #         size_hint: (.1,.1)
-                    #     Label:
-                    #         text: '1920 HRS'
-                    #         size_hint: (.1,.1)
-                    #     Label:
-                    #         text: '1960 HRS'
-                    #         size_hint: (.1,.1)
-                    #     Label:
-                    #         text: '2000 HRS'
-                    #         size_hint: (.1,.1)
-                    #     Label:
-                    #         text: '2088 HRS'
-                    #         size_hint: (.1,.1)            
+                BoxLayout:
+                    size_hint_y: None
+                    height: '48dp'
+                    Label:
+                        text: 'FT Ratio'
+                    Slider:
+                        id: s3
+                        step: .1
+                        min: 0
+                        max: 1
+                    Label:
+                        text: '{}'.format(s3.value)           
             BoxLayout: 
+                # id: rs
                 orientation: 'vertical'
                 size_hint: (.5,1)
+                # BoxLayout:
                 Button:
-                    halign: 'left'
                     text: 'Calculate Work Days in Between'
-                    size_hint: (1,.1625)
-                Label:
-                    halign: 'left'
-                    text:'Work Days (RAW) : ' 
-                    size_hint: (1,.2) 
+                    size_hint: (.6,.1)
+                    pos_hint: {'center_x':.5}
+                BoxLayout:
+                    size_hint_y: None
+                    height: '48dp'
+                    Label:
+                        text:'Work Days (RAW) : ' 
+                        size_hint: (1,.2) 
+                    Label:
+                        rgba: .4,.4,1,1
+                        text:'Work Days (RAW) : ' 
+                        size_hint: (1,.2) 
                 Label:
                     halign: 'left'
                     text:'Work Days (ADJ) (based on hours chosen per year): ' 
