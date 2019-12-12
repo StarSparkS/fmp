@@ -206,17 +206,20 @@ Builder.load_string("""
                     size_hint: (1,.1)
                     text: 'Not full time? Use FT Ratio (0 - 100%)'
                 BoxLayout:
+                    id: wwb
                     size_hint_y: None
                     height: '48dp'
                     Label:
                         text: 'FT Ratio'
                     Slider:
                         id: s3
-                        step: .1
+                        step: .01
                         min: 0
                         max: 1
+                        on_value: drf.stp()
                     Label:
-                        text: '{}'.format(s3.value)           
+                        id: stp
+                        text: ""
             BoxLayout: 
                 # id: rs
                 orientation: 'vertical'
@@ -380,12 +383,19 @@ class D2H(Screen): #Calculate dates/hours to be funded in a range
         if (self.ids.startDateInput.focus):
             self.ids.startDateInput.text = ""
             self.ids.lcheck.text = "focused"
+            # (*args).ids.lcheck.text = "f2"
         else:
             if(len(self.ids.startDateInput.text) == 10):
                 self.ids.lcheck.text = "Length Correct"
             else:
                 self.ids.lcheck.text = "Not Focused"
-    # pass
+
+    def stp(self):
+        n = self.ids.s3.value
+        n = Decimal(n)
+        n = round(n,2)
+        self.ids.stp.text = str(n*100) + '%' #str(round(Decimal(s3), 1)) 
+
 class S3A2(Screen): #Calculate material costs
     pass
 class Screen4(Screen): #Keys Input
