@@ -14,6 +14,7 @@ from kivy.lang import Builder
 from Dates2Hours import D2Hfx, AM
 from decimal import *
 from kivy.uix.textinput import TextInput
+from datetime import date, timedelta, datetime
 
 # # class Wid(Widget):
 # # #   Button(text='Begin')
@@ -24,7 +25,7 @@ from kivy.uix.textinput import TextInput
 
 # StartScreen.name("main")
 # StartScreen.name="StartScreen"
-# self.name = "StartScreen"
+# obj.name = "StartScreen"
 # return Label(text="StartScreen")
 
 # def main():
@@ -34,367 +35,141 @@ from kivy.uix.textinput import TextInput
 # def AM():
 #     print("Hello")
     
-Builder.load_string(""" 
-<FPH>: 
-    id: fz
-    # ScreenManager:
-    #     id: rt
-    BoxLayout:
-        orientation: 'vertical'
-        NavBar_ActionBar:
-            id: ActionBar
-        Button:
-            text: 'Financial Program Home'
-            on_release: fz.ast2()
-        Button:
-            text: 'Financial Program Home'
-            on_release: app.ast()
-        Button:
-            text: 'Progress Bar Test'
-            on_release: app.pbaru()
-        Label:
-            id:lls
-            text: "Test"
-        # Label:
-        #     text: 'Progression: {}%'.format(int(pb.value))
-        #     size_hint_y: None
-    
-        #     height: '48dp'
-        ProgressBar:
-            id: pb
-            size_hint_x: 1
-            size_hint_y: None
-            height: '48dp'
-            value: 0
-            # value: (fz.bar() * 10) % 100
-    # <root>:
-    #     id: sm
-          
-<NavBar_ActionBar@ActionBar>:
-    # manager: rt
-    ActionView:
-        id: ActionView
-        use_separator: True
-        HiddenIcon_ActionPrevious:
-        ActionGroup:
-            id: App_ActionGroup
-            mode: 'spinner'
-            text: 'NAV'
-            ActionButton:
-                text: 'Home'
-                on_release: app.root.current = 'FinancialProgramHome'
-            ActionButton:
-                text: 'DatesToHours'
-                on_release: app.root.current = 'D2HA'
-            ActionButton:
-                text: 'APP 2 TBD'
-                on_release:  app.root.current = 'A2'
-            ActionButton:
-                text: 'APP 3 TBD'
-                on_release:  app.root.current = 'A3'
-            ActionButton:
-                text: 'APP 4 TBD'
-                on_release:  app.root.current = 'A4'
-            ActionButton:
-                text: 'APP 5 TBD'
-                on_release:  app.root.current = 'A5'
-            ActionButton:
-                text: 'APP 6 TBD'
-                on_release:  app.root.current = 'A6'
-            ActionButton:
-                text: 'APP 7 TBD'
-                on_release:  app.root.current = 'A7'
-            ActionButton:
-                text: 'APP 8 TBD'
-                on_release:  app.root.current = 'A8'
-            ActionButton:
-                text: 'CREDITS'
-                on_release:  app.root.current = 'CRR'
+# Builder.load_string(""" 
 
-        ActionGroup:
-            id: App_ActionGroup
-            mode: 'spinner'
-            text: 'SETTINGS'
-            ActionButton:
-                text: 'App Settings'
-                on_press: app.open_settings()
-            ActionButton:
-                text: 'TBD'
-            # ActionButton:
-            #     text: 'Quit'
-            #     on_press: app.get_running_app().stop()
-        # ActionGroup:
-        #     id: File_ActionGroup
-        #     mode: 'spinner'
-        #     text: 'TBD FILE OPS'
-        #     ActionButton:
-        #         text: 'Open'
-        #     ActionButton:
-        #         text: 'Save'
-        ActionButton:
-            text: 'EXIT'
-            on_press: app.get_running_app().stop()
-       
+# """)
 
-<HiddenIcon_ActionPrevious@ActionPrevious>:
-    title: ''   # app.title if app.title is not None else 'Action Previous'
-    with_previous: False
-    app_icon: ''
-    app_icon_width: 0
-    app_icon_height: 0
-    size_hint_x: None
-    width: len(self.title) * 10
-
-<D2H>: 
-    id: drf
-    BoxLayout: 
-        orientation: 'vertical'
-        NavBar_ActionBar:
-            id: ActionBar
-        BoxLayout:
-            orientation: 'horizontal'
-            BoxLayout: 
-                orientation: 'vertical'
-                size_hint: (.5,1)
-                TextInput:
-                    size_hint: (1,.1)
-                    text: 'Enter Start Date (MM/DD/YYYY)'
-                    multiline: False
-                    id: startDateInput
-                    # on_focus: self.text = ""
-                    on_focus: drf.SDI(self, 1)
-                TextInput:
-                    size_hint: (1,.1)
-                    text: 'Enter End Date (MM/DD/YYYY)'
-                    multiline: False
-                    id: startDateInput2
-                    on_focus: self.text = ""
-                Label: 
-                    size_hint: (1,.1)
-                    text: 'Pick annual hours (will be divided by 2088) for %' 
-                BoxLayout:
-                    size_hint_y: None
-                    height: '48dp'
-                    Label:
-                        text: 'Hours'
-                    Slider:
-                        id: s2
-                        step: 8
-                        min: 1880
-                        max: 2088
-                    Label:
-                        text: '{}'.format(s2.value)
-
-                   
-                #         BoxLayout:
-                #             orientation: 'vertical'
-                #             # size_hint: (1, 1)
-                         
-                            # CheckBox:
-                            #     text: '3'
-                            #     size_hint: (.9, 1)
-                            #     group: 'YH'
-                            # CheckBox:
-                            #     text: '4'
-                            #     size_hint: (.9, 1)
-                            #     group: 'YH'
-                            # CheckBox:
-                            #     text: '5'
-                            #     size_hint: (.9, 1)
-                            #     group: 'YH'
-                Label: 
-                    size_hint: (1,.1)
-                    text: 'Not full time? Use FT Ratio (0 - 100%)'
-                BoxLayout:
-                    id: wwb
-                    size_hint_y: None
-                    height: '48dp'
-                    Label:
-                        text: 'FT Ratio'
-                    Slider:
-                        id: s3
-                        step: .01
-                        min: 0
-                        max: 1
-                        on_value: drf.stp()
-                    Label:
-                        id: stp
-                        text: ""
-            BoxLayout: 
-                # id: rs
-                orientation: 'vertical'
-                size_hint: (.5,1)
-                # BoxLayout:
-                Button:
-                    text: 'Calculate Work Days in Between'
-                    size_hint: (.6,.1)
-                    pos_hint: {'center_x':.5}
-                BoxLayout:
-                    size_hint_y: None
-                    height: '48dp'
-                    Label:
-                        text:'Work Days (RAW) : ' 
-                        size_hint: (1,.2) 
-                    Label:
-                        rgba: .4,.4,1,1
-                        text:'Work Days (RAW) : ' 
-                        size_hint: (1,.2) 
-                Label:
-                    halign: 'left'
-                    text:'Work Days (ADJ) (based on hours chosen per year): ' 
-                    size_hint: (1,.2) 
-                Label:
-                    text:'Hours (RAW) : ' 
-                    size_hint: (1,.2) 
-                Label:
-                    text:'Hours (ADJ) (based on FT Ratio) ' 
-                    size_hint: (1,.2) 
-        ProgressBar:
-            id: pb
-            size_hint_x: 1
-            size_hint_y: None
-            height: '48dp'
-            value: 20
-            # app.pbaru()
-            # value: 0
-            # value: (fz.bar() * 10) % 100
-<S3A2>: 
-    BoxLayout: 
-        orientation: 'vertical'
-        NavBar_ActionBar:
-            id: ActionBar
-        Button:
-            text: 'Screen3 (App 2) TBD'
-        ProgressBar:
-            id: pb
-            size_hint_x: 1
-            size_hint_y: None
-            height: '48dp'
-            value: 30
-<Screen4>: 
-    BoxLayout: 
-        orientation: 'vertical'
-        NavBar_ActionBar:
-            id: ActionBar
-        Button:
-            text: 'Screen4 (App 3) TBD'
-        ProgressBar:
-            id: pb
-            size_hint_x: 1
-            size_hint_y: None
-            height: '48dp'
-            value: 40
-<Screen5>: 
-    BoxLayout: 
-        orientation: 'vertical'
-        NavBar_ActionBar:
-            id: ActionBar
-        Button:
-            text: 'Screen5 (App 4) TBD'
-        ProgressBar:
-            id: pb
-            size_hint_x: 1
-            size_hint_y: None
-            height: '48dp'
-            value: 50
-<Screen6>: 
-    BoxLayout: 
-        orientation: 'vertical'
-        NavBar_ActionBar:
-            id: ActionBar
-        Button:
-            text: 'Screen6 (App 5) TBD'
-        ProgressBar:
-            id: pb
-            size_hint_x: 1
-            size_hint_y: None
-            height: '48dp'
-            value: 60
-<Screen7>: 
-    BoxLayout: 
-        orientation: 'vertical'
-        NavBar_ActionBar:
-            id: ActionBar
-        Button:
-            text: 'Screen7 (App 6) TBD'
-        ProgressBar:
-            id: pb
-            size_hint_x: 1
-            size_hint_y: None
-            height: '48dp'
-            value: 70
-<Screen8>: 
-    BoxLayout: 
-        orientation: 'vertical'
-        NavBar_ActionBar:
-            id: ActionBar
-        Button:
-            text: 'Screen8 (App 7) TBD'
-        ProgressBar:
-            id: pb
-            size_hint_x: 1
-            size_hint_y: None
-            height: '48dp'
-            value: 80
-<Screen9>: 
-    BoxLayout: 
-        orientation: 'vertical'
-        NavBar_ActionBar:
-            id: ActionBar
-        Button:
-            text: 'Screen9 (App 8) TBD'
-        ProgressBar:
-            id: pb
-            size_hint_x: 1
-            size_hint_y: None
-            height: '48dp'
-            value: 90
-<CRS>
-    BoxLayout: 
-        orientation: 'vertical'
-        NavBar_ActionBar:
-            id: ActionBar
-        Button:
-            text: 'CREDITS TBD'
-        ProgressBar:
-            id: pb
-            size_hint_x: 1
-            size_hint_y: None
-            height: '48dp'
-            value: 100
-""")
-
+Builder.load_file('fpr_kivy.kv')
 #
 #Class Declaration
 #
 class FPH(Screen): #Home Page
-    def ast2(self):
-        self.ids.lls.text = "gotcha"
+    def ast2(obj):
+        obj.ids.lls.text = "gotcha"
     # pass
 
 #
 # every action creates a dynamic screen?
 #     
 class D2H(Screen): #Calculate dates/hours to be funded in a range
-    # def on_focus(instance, value):
-    SDI_valid = 0
-    EDI_valid = 0
-    def SDI(self, *args):   
+    # SDI_valid = 0
+    # sd = ""
+    # EDI_valid = 0
+    # ed = ""  
+    def __init__(self, **kwargs):
+        self.SDI_valid = 0
+        self.sd = ""
+        self.EDI_valid = 0
+        self.ed = ""
+        self.r_days=0
+        self.r_hours=0
+        self.a_days =0
+        self.a_hours = 0
+        self.ftr = 1
+        super().__init__(**kwargs)
+    
+    def D2H_reset(obj):
+        # print (obj)
+        # print (obj)
+        obj.SDI_valid = 0
+        obj.sd = ""
+        obj.EDI_valid = 0
+        obj.ed = ""
+        obj.ids.startDateInput.disabled = 0
+        obj.ids.endDateInput.disabled = 0
+        obj.ids.startDateInput.text = 'Enter Start Date (MM/DD/YYYY)'
+        obj.ids.D2H_PROMPT1.text = 'Enter Start Date (MM/DD/YYYY)'
+        obj.ids.endDateInput.text = 'Enter End Date (MM/DD/YYYY)'
+        obj.ids.D2H_PROMPT2.text = 'Enter End Date (MM/DD/YYYY)'
+        obj.ids.d2h_check_1.text = 'Start Date State: Incomplete'
+        obj.ids.d2h_check_2.text = 'End Date State: Incomplete'
+        obj.ids.d2h_check_1.color = 1,0,0,1
+        obj.ids.d2h_check_2.color = 1,0,0,1
+        obj.ids.s2.value = 1880
+        obj.ids.s3.value = 1
+        obj.ids.CalcFB.text = "Calculation Feedback: ?"
+        obj.ids.CalcFB.color = 1, 1, 1, 1
+        obj.ids.wdr.text = "-----"
+        obj.ids.wdr.color = 1,0, 0, 1
+        obj.ids.wda.text = "-----"
+        obj.ids.wda.color = 1,0, 0, 1
+        obj.ids.rwh.text = "-----"
+        obj.ids.rwh.color = 1,0, 0, 1
+        obj.ids.awh.text = "-----"
+        obj.ids.awh.color = 1,0, 0, 1
+
+    def SDI(self):   
         if (self.ids.startDateInput.focus):
             self.ids.startDateInput.text = ""
-            self.ids.lcheck.text = "focused"
+            self.ids.d2h_check_1.text = "Start Date Status: Focused/Data Entry"
             # (*args).ids.lcheck.text = "f2"
         else:
             if(len(self.ids.startDateInput.text) == 10):
-                self.ids.lcheck.text = "Length Correct"
+                self.ids.d2h_check_1.text = "Start Date Status: Length Correct"
+                try:
+                    start_mm, start_dd, start_yyyy=  self.ids.startDateInput.text.strip().split("/")
+                    self.sd = date(int(start_yyyy), int(start_mm), int(start_dd))
+                    self.ids.d2h_check_1.text = "Start Date Status: Complete! " + str(self.sd)
+                    self.ids.d2h_check_1.color = 0,1,0,1
+                    self.ids.startDateInput.disabled = 1
+                    self.SDI_valid = 1
+                except: 
+                    self.ids.d2h_check_1.text = "Start Date Status: Input Invalid"
             else:
-                self.ids.lcheck.text = "Not Focused"
+                self.ids.d2h_check_1.text = "Start Date Status: Length Incorrect/Not Focused"
 
-    def stp(self):
-        n = self.ids.s3.value
-        n = Decimal(n)
-        n = round(n,2)
-        self.ids.stp.text = str(n*100) + '%' #str(round(Decimal(s3), 1)) 
+    def EDI(obj):   
+        if (obj.ids.endDateInput.focus):
+            obj.ids.endDateInput.text = ""
+            obj.ids.d2h_check_2.text = "End Date Status: Focused/Data Entry"
+            # (*args).ids.lcheck.text = "f2"
+        else:
+            if(len(obj.ids.endDateInput.text) == 10):
+                obj.ids.d2h_check_2.text = "End Date Status: Length Correct"
+                try:
+                    end_mm, end_dd, end_yyyy=  obj.ids.endDateInput.text.strip().split("/")
+                    obj.ed = date(int(end_yyyy), int(end_mm), int(end_dd))
+                    if (obj.ed > obj.sd):
+                        obj.ids.d2h_check_2.text = "End Date Status: Complete! "  + str(obj.ed)
+                        obj.ids.d2h_check_2.color = 0,1,0,1
+                        obj.ids.endDateInput.disabled = 1
+                        obj.EDI_valid = 1
+                    else:
+                        obj.ids.d2h_check_2.text = "End Date Status: End Date needs to be past Start Date"
+                except: 
+                    obj.ids.d2h_check_2.text = "Start Date Status: Lenght Correct/Date Input Invalid"
+            else:
+                obj.ids.d2h_check_2.text = "Start Date Status: Length Incorrect/Not Focused"
+
+    def calc(obj):   
+        if(obj.EDI_valid and obj.SDI_valid):
+            obj.ids.CalcFB.text = "input valid!"
+            obj.ids.CalcFB.color = 0, 1, 0, 1
+            loop_date = obj.sd #set variable to start date
+            while(loop_date <= obj.ed):
+                if(loop_date.weekday() < 5):
+                    obj.r_days+=1
+                loop_date += timedelta(days=1)
+            obj.r_hours = obj.r_days*8
+            obj.a_days = (Decimal(obj.ids.s2.value)/(Decimal(2088))) * (Decimal(obj.ftr)) * obj.r_days
+            obj.a_hours = obj.a_days * 8
+            obj.ids.wdr.text = str(obj.r_days)
+            obj.ids.wdr.color = 0, 1, 0, 1
+            obj.ids.wda.text = str(obj.a_days)
+            obj.ids.wda.color = 0, 1, 0, 1
+            obj.ids.rwh.text = str(obj.r_hours)
+            obj.ids.rwh.color = 0, 1, 0, 1
+            obj.ids.awh.text = str(obj.a_hours)
+            obj.ids.awh.color = 0, 1, 0, 1
+        else:
+            obj.ids.CalcFB.text = "Calculation Feedback: Fix Input"
+            obj.ids.CalcFB.color = 1, 0, 0, 1
+        return 1
+    def stp(obj):
+        obj.ftr = obj.ids.s3.value
+        obj.ftr = Decimal(obj.ftr)
+        obj.ftr = round(obj.ftr,2)
+        obj.ids.stp.text = str(round(n*100)) + '%' #str(round(Decimal(s3), 1)) 
 
 class S3A2(Screen): #Calculate material costs
     pass
@@ -413,18 +188,19 @@ class Screen9(Screen): #??
 class CRS(Screen): #CREDITS
     pass
 
-# cl
-rt = ScreenManager( transition=FadeTransition(duration=.25))
-rt.add_widget(FPH(name='FinancialProgramHome'))
-rt.add_widget(D2H(name='D2HA')) # name is how to navigate
-rt.add_widget(S3A2(name='A2'))
-rt.add_widget(Screen4(name='A3'))
-rt.add_widget(Screen5(name='A4'))
-rt.add_widget(Screen6(name='A5'))
-rt.add_widget(Screen7(name='A6'))
-rt.add_widget(Screen8(name='A7'))
-rt.add_widget(Screen9(name='A8'))
-rt.add_widget(CRS(name='CRR'))
+#  # cl
+#     rt = ScreenManager( transition=FadeTransition(duration=.25))
+#     self.rt.add_widget(FPH(name='FinancialProgramHome'))
+#     self.rt.add_widget(D2H(name='D2HA')) # name is how to navigate
+#     self.rt.add_widget(D2H(name='2'))
+#     self.rt.add_widget(S3A2(name='A2'))
+#     self.rt.add_widget(Screen4(name='A3'))
+#     self.rt.add_widget(Screen5(name='A4'))
+#     self.rt.add_widget(Screen6(name='A5'))
+#     self.rt.add_widget(Screen7(name='A6'))
+#     self.rt.add_widget(Screen8(name='A7'))
+#     self.rt.add_widget(Screen9(name='A8'))
+#     self.rt.add_widget(CRS(name='CRR'))
 #main App
 class FPR(App):
     from Dates2Hours import D2Hfx, AM
@@ -434,43 +210,63 @@ class FPR(App):
     D2HED = 0
     # = 0
     pbar =0
-    # def datevalidator(self):
-    def pbaru(self):
+    # def datevalidator(obj):
+    def pbaru(obj):
         global pbar
         if(pbar < 100):
             pbar +=10
-            self.root.get_screen('FinancialProgramHome').ids.pb.value = pbar
+            obj.root.get_screen('FinancialProgramHome').ids.pb.value = pbar
         else:
             
             pbar = 0
-            self.root.get_screen('FinancialProgramHome').ids.pb.value = pbar
+            obj.root.get_screen('FinancialProgramHome').ids.pb.value = pbar
         return
 
-    def pbar2(self):
+    def pbar2(obj):
         global pbar
         if(pbar < 100):
             pbar +=10
-            # self.root.get_screen('FinancialProgramHome').ids.pb.value = pbar
+            # obj.root.get_screen('FinancialProgramHome').ids.pb.value = pbar
         else:
             
             pbar = 0
-            # self.root.get_screen('FinancialProgramHome').ids.pb.value = pbar
+            # obj.root.get_screen('FinancialProgramHome').ids.pb.value = pbar
         return pbar
         
         # return pbar
 
-    def ast(self):
-        self.root.get_screen('FinancialProgramHome').ids.lls.text = "more"
+    def ast(obj):
+        obj.root.get_screen('FinancialProgramHome').ids.lls.text = "more"
         # rt.get_screen('A3')
 
         return
     
+    def __init__ (self):
+        # cl
+        super().__init__()
+        self.rt = ScreenManager( transition=FadeTransition(duration=.25))
+        self.rt.add_widget(FPH(name='FinancialProgramHome'))
+        self.rt.add_widget(D2H(name='D2HA')) # name is how to navigate
+        # self.rt.add_widget(D2H(name='2'))
+        self.rt.add_widget(S3A2(name='A2'))
+        self.rt.add_widget(Screen4(name='A3'))
+        self.rt.add_widget(Screen5(name='A4'))
+        self.rt.add_widget(Screen6(name='A5'))
+        self.rt.add_widget(Screen7(name='A6'))
+        self.rt.add_widget(Screen8(name='A7'))
+        self.rt.add_widget(Screen9(name='A8'))
+        self.rt.add_widget(CRS(name='CRR'))
+        super().run()
+        
+
+
+
     def build(self):
-        # self.icon = 'PFPICON.ico'
+        # obj.icon = 'PFPICON.ico'
         self.title = 'Project Financial Program (PFP)'
         
-        # self.screens = {}
-        # self.available_screens = sorted([
+        # obj.screens = {}
+        # obj.available_screens = sorted([
         #     'Buttons', 'ToggleButton', 'Sliders', 'ProgressBar', 'Switches',
         #     'CheckBoxes', 'TextInputs', 'Accordions', 'FileChoosers',
         #     'Carousel', 'Bubbles', 'CodeInput', 'DropDown', 'Spinner',
@@ -478,9 +274,10 @@ class FPR(App):
         #     'Popups', 'ScreenManager'])
             
     
-        # self.get_application_icon()
+        # obj.get_application_icon()
 
-        return rt
+        return self.rt
 
 if __name__ == '__main__':
-    FPR().run()
+    # FPR().run()
+    inst = FPR()
