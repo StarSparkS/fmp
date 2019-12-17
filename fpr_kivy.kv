@@ -1,327 +1,11 @@
-<FPH>: 
-    id: fz
-    # ScreenManager:
-    #     id: rt
-    BoxLayout:
-        orientation: 'vertical'
-        NavBar_ActionBar:
-            id: ActionBar
-        Button:
-            text: 'Financial Program Home'
-            on_release: fz.ast2()
-        Button:
-            text: 'Financial Program Home'
-            on_release: app.ast()
-        Button:
-            text: 'Progress Bar Test'
-            on_release: app.pbaru()
-        Label:
-            id:lls
-            text: "Test"
-        # Label:
-        #     text: 'Progression: {}%'.format(int(pb.value))
-        #     size_hint_y: None
-    
-        #     height: '48dp'
-        ProgressBar:
-            id: pb
-            size_hint_x: 1
-            size_hint_y: None
-            height: '48dp'
-            value: 0
-            # value: (fz.bar() * 10) % 100
-    # <root>:
-    #     id: sm
-          
-<NavBar_ActionBar@ActionBar>:
-    # manager: rt
-    ActionView:
-        id: ActionView
-        use_separator: True
-        HiddenIcon_ActionPrevious:
-        ActionGroup:
-            id: App_ActionGroup
-            mode: 'spinner'
-            text: 'NAV'
-            ActionButton:
-                text: 'Home'
-                on_release: app.root.current = 'FinancialProgramHome'
-            ActionButton:
-                text: 'DatesToHours'
-                on_release: app.root.current = 'D2HA'
-            # ActionButton:
-            #    text: '2'
-             #   on_release: app.root.current = '2'
-            ActionButton:
-                text: 'APP 2 TBD'
-                on_release:  app.root.current = 'A2'
-            ActionButton:
-                text: 'APP 3 TBD'
-                on_release:  app.root.current = 'A3'
-            ActionButton:
-                text: 'APP 4 TBD'
-                on_release:  app.root.current = 'A4'
-            ActionButton:
-                text: 'APP 5 TBD'
-                on_release:  app.root.current = 'A5'
-            ActionButton:
-                text: 'APP 6 TBD'
-                on_release:  app.root.current = 'A6'
-            ActionButton:
-                text: 'APP 7 TBD'
-                on_release:  app.root.current = 'A7'
-            ActionButton:
-                text: 'APP 8 TBD'
-                on_release:  app.root.current = 'A8'
-            ActionButton:
-                text: 'CREDITS'
-                on_release:  app.root.current = 'CRR'
 
-        ActionGroup:
-            id: App_ActionGroup
-            mode: 'spinner'
-            text: 'SETTINGS'
-            ActionButton:
-                text: 'App Settings'
-                on_press: app.open_settings()
-            ActionButton:
-                text: 'TBD'
-            # ActionButton:
-            #     text: 'Quit'
-            #     on_press: app.get_running_app().stop()
-        # ActionGroup:
-        #     id: File_ActionGroup
-        #     mode: 'spinner'
-        #     text: 'TBD FILE OPS'
-        #     ActionButton:
-        #         text: 'Open'
-        #     ActionButton:
-        #         text: 'Save'
-        ActionButton:
-            text: 'EXIT'
-            on_press: app.get_running_app().stop()
-       
 
-<HiddenIcon_ActionPrevious@ActionPrevious>:
-    title: ''   # app.title if app.title is not None else 'Action Previous'
-    with_previous: False
-    app_icon: ''
-    app_icon_width: 0
-    app_icon_height: 0
-    size_hint_x: None
-    width: len(self.title) * 10
 
-<D2H>: 
-    id: drf
-    BoxLayout: 
-        orientation: 'vertical'
-        NavBar_ActionBar:
-            id: ActionBar
-        BoxLayout:
-            orientation: 'horizontal'
-            BoxLayout: 
-                orientation: 'vertical'
-                size_hint: (.5,1)
-                Label:
-                    id: D2H_PROMPT1
-                    size_hint: (1,.05)
-                    text: 'Enter Start Date (MM/DD/YYYY)'
-                    color: 1,1,1,1
-                    canvas.before:
-                        Color:
-                            rgba: .4,.4,1,.5
-                        Rectangle: 
-                            pos: self.pos
-                            size: self.size
-                    
-                    #background_color: (0,0,1,0.4)
-                TextInput:
-                    size_hint: (1,.1)
-                    text: 'Enter Start Date (MM/DD/YYYY)'
-                    multiline: False
-                    id: startDateInput
-                    # on_focus: self.text = ""
-                    on_focus: drf.SDI()
-                Label:
-                    id: d2h_check_1
-                    size_hint: (1,.05)
-                    text: 'Start Date Status: Incomplete'
-                    color: 1, 0, 0 ,1 
-                Label:
-                    id: D2H_PROMPT2
-                    size_hint: (1,.05)
-                    text: 'Enter End Date (MM/DD/YYYY)'
-                    canvas.before:
-                        Color:
-                            rgba: .4,.4,1,.5
-                        Rectangle: 
-                            pos: self.pos
-                            size: self.size
-                    text: 'Enter Start Date (MM/DD/YYYY)'
-                    color: 1,1,1,1
-                TextInput:
-                    size_hint: (1,.1)
-                    text: 'Enter End Date (MM/DD/YYYY)'
-                    multiline: False
-                    id: endDateInput
-                    on_focus: drf.EDI()
-                Label:
-                    id: d2h_check_2
-                    size_hint: (1,.05)
-                    text: 'End Date Status: Incomplete'
-                    color: 1, 0, 0 ,1 
-                Label: 
-                    size_hint: (1,.1)
-                    text: 'Pick annual hours (will be divided by 2088) for %' 
-                    canvas.before:
-                        Color:
-                            rgba: 0,.6,.6,.5
-                        Rectangle: 
-                            pos: self.pos
-                            size: self.size
-                BoxLayout:
-                    size_hint_y: None
-                    height: '48dp'
-                    Label:
-                        text: 'Hours'
-                    Slider:
-                        id: s2
-                        step: 8
-                        min: 1880
-                        max: 2088
-                        value: 1880
-                    Label:
-                        text: '{}'.format(s2.value)                   
-                #         BoxLayout:
-                #             orientation: 'vertical'
-                #             # size_hint: (1, 1)
-                         
-                            # CheckBox:
-                            #     text: '3'
-                            #     size_hint: (.9, 1)
-                            #     group: 'YH'
-                            # CheckBox:
-                            #     text: '4'
-                            #     size_hint: (.9, 1)
-                            #     group: 'YH'
-                            # CheckBox:
-                            #     text: '5'
-                            #     size_hint: (.9, 1)
-                            #     group: 'YH'
-                Label: 
-                    size_hint: (1,.1)
-                    text: 'Not full time? Use FT Ratio (0 - 100%)'
-                    canvas.before:
-                        Color:
-                            rgba: 0,.6,.6,.5
-                        Rectangle: 
-                            pos: self.pos
-                            size: self.size
-                BoxLayout:
-                    id: wwb
-                    size_hint_y: None
-                    height: '48dp'
-                    Label:
-                        text: 'FT Ratio'
-                    Slider:
-                        id: s3
-                        step: .01
-                        min: 0
-                        max: 1
-                        value: 1
-                        on_value: drf.stp()
-                    Label:
-                        id: stp
-                        text: "100%"
-            BoxLayout: 
-                # id: rs
-                orientation: 'vertical'
-                size_hint: (.5,1)
-                BoxLayout:
-                    orientation: 'horizontal'
-                    size_hint: (1,.1)
-                    Button:
-                        text: 'Calculate Work Days'
-                        size_hint: (.5,1)
-                        #pos_hint: {'center_x':.5}
-                        on_release: drf.calc()
-                    Button:
-                        text: 'Reset'
-                        size_hint: (.5,1)
-                        #pos_hint: {'center_x':.5}
-                        on_release: drf.D2H_reset()
-                 
-                Label:
-                    id: CalcFB
-                    text:'Calculation Feedback: ? ' 
-                    size_hint: (1,.1) 
-                BoxLayout:
-                    size_hint_y: None
-                    height: '48dp'
-                    Label:
-                        text:'Work Days (RAW) : ' 
-                        size_hint: (1,.2) 
-                    Label:
-                        id: wdr
-                        rgba: .4,.4,1,1
-                        text:'-----' 
-                        size_hint: (1,.2) 
-                        color: 1,0,0,1 
-                Label:
-                    halign: 'left'
-                    text:'Work Days (ADJ) (based on hours chosen per year): ' 
-                    size_hint: (1,.1) 
-                Label:
-                    id: wda
-                    text:   '-----'
-                    size_hint: (1,.1) 
-                    color: 1,0,0,1 
-                BoxLayout:
-                    size_hint_y: None
-                    height: '48dp'
-                    Label:
-                        text:'Hours (RAW) : ' 
-                        size_hint: (1,.2) 
-                    Label:
-                        id: rwh
-                        text:'-----' 
-                        size_hint: (1,.2)
-                        color: 1,0,0,1 
-                Label:
-                    text:'Hours (ADJ) (based on FT Ratio) ' 
-                    size_hint: (1,.1) 
-                Label:
-                    id: awh
-                    text:'-----' 
-                    size_hint: (1,.1) 
-                    color: 1,0,0,1 
-        ProgressBar:
-            id: pb
-            size_hint_x: 1
-            size_hint_y: None
-            height: '48dp'
-            value: 20
-            # app.pbaru()
-            # value: 0
-            # value: (fz.bar() * 10) % 100
-<S3A2>: 
-    BoxLayout: 
-        orientation: 'vertical'
-        NavBar_ActionBar:
-            id: ActionBar
-        Button:
-            text: 'Screen3 (App 2) TBD'
-        ProgressBar:
-            id: pb
-            size_hint_x: 1
-            size_hint_y: None
-            height: '48dp'
-            value: 30
 <Screen4>: 
     BoxLayout: 
         orientation: 'vertical'
         NavBar_ActionBar:
-            id: ActionBar
+            id:abar
         Button:
             text: 'Screen4 (App 3) TBD'
         ProgressBar:
@@ -334,7 +18,7 @@
     BoxLayout: 
         orientation: 'vertical'
         NavBar_ActionBar:
-            id: ActionBar
+            id:abar
         Button:
             text: 'Screen5 (App 4) TBD'
         ProgressBar:
@@ -347,7 +31,7 @@
     BoxLayout: 
         orientation: 'vertical'
         NavBar_ActionBar:
-            id: ActionBar
+            id:abar
         Button:
             text: 'Screen6 (App 5) TBD'
         ProgressBar:
@@ -360,7 +44,7 @@
     BoxLayout: 
         orientation: 'vertical'
         NavBar_ActionBar:
-            id: ActionBar
+            id:abar
         Button:
             text: 'Screen7 (App 6) TBD'
         ProgressBar:
@@ -373,7 +57,7 @@
     BoxLayout: 
         orientation: 'vertical'
         NavBar_ActionBar:
-            id: ActionBar
+            id:abar
         Button:
             text: 'Screen8 (App 7) TBD'
         ProgressBar:
@@ -386,7 +70,7 @@
     BoxLayout: 
         orientation: 'vertical'
         NavBar_ActionBar:
-            id: ActionBar
+            id:abar
         Button:
             text: 'Screen9 (App 8) TBD'
         ProgressBar:
@@ -399,7 +83,7 @@
     BoxLayout: 
         orientation: 'vertical'
         NavBar_ActionBar:
-            id: ActionBar
+            id:abar
         Button:
             text: 'CREDITS TBD'
         ProgressBar:

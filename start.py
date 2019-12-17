@@ -1,6 +1,5 @@
 from kivy.config import Config
 Config.set('kivy','window_icon', "")
-
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.button import Button
@@ -11,35 +10,46 @@ FadeTransition, WipeTransition, FallOutTransition, RiseInTransition)
 from kivy.uix.progressbar import ProgressBar
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
-from Dates2Hours import D2Hfx, AM
+from Dates2Hours import D2Hfx, AM #, D2H
 from decimal import *
 from kivy.uix.textinput import TextInput
 from datetime import date, timedelta, datetime
-
-# # class Wid(Widget):
-# # #   Button(text='Begin')
-# #     # Wid.add_widget(pb)
-# #     # pb = ProgressBar(max=1000)
-# #     pb.value = 750
-# #     pass
-
-# StartScreen.name("main")
-# StartScreen.name="StartScreen"
-# obj.name = "StartScreen"
-# return Label(text="StartScreen")
-
-# def main():
-#     val = D2Hfx(0, 1, .5)
-#     print(val)
-#     return 0
-# def AM():
-#     print("Hello")
-    
-# Builder.load_string(""" 
-
-# """)
+from kivy.properties import NumericProperty, StringProperty, BooleanProperty,ListProperty
 
 Builder.load_file('fpr_kivy.kv')
+Builder.load_file('D2H_SCREEN.kv')
+Builder.load_file('HOME.kv')
+Builder.load_file('navbar.kv')
+Builder.load_string(""" 
+<S3A2>: 
+    BoxLayout: 
+        orientation: 'vertical'
+        NavBar_ActionBar:
+            id:abar
+        # Accordion:
+        #     orientation: 'horizontal'
+        #     AccordionItem:
+        #         title: 'File Selection'
+        #         Label:
+        #             text: 'This is a label fit to the content view'
+        #             text_size: self.width, None
+        #     AccordionItem:
+        #         title: 'Panel 2'
+        #         Button:
+        #             text: 'A button, what else?'
+
+        #     AccordionItem:
+        #         title: 'Panel 3'
+        #         Label:
+        #             text: 'This is a label fit to the content view'
+        #             text_size: self.width, None
+        ProgressBar:
+            id: pb
+            height: '10dp'
+            size_hint_x: 1
+            size_hint_y: None
+            value: 30                    
+""")
 #
 #Class Declaration
 #
@@ -47,7 +57,6 @@ class FPH(Screen): #Home Page
     def ast2(obj):
         obj.ids.lls.text = "gotcha"
     # pass
-
 #
 # every action creates a dynamic screen?
 #     
@@ -173,8 +182,10 @@ class D2H(Screen): #Calculate dates/hours to be funded in a range
 
 class S3A2(Screen): #Calculate material costs
     pass
+
 class Screen4(Screen): #Keys Input
     pass
+
 class Screen5(Screen): #Values Inputs
     pass
 class Screen6(Screen): #Cost Output
@@ -188,66 +199,15 @@ class Screen9(Screen): #??
 class CRS(Screen): #CREDITS
     pass
 
-#  # cl
-#     rt = ScreenManager( transition=FadeTransition(duration=.25))
-#     self.rt.add_widget(FPH(name='FinancialProgramHome'))
-#     self.rt.add_widget(D2H(name='D2HA')) # name is how to navigate
-#     self.rt.add_widget(D2H(name='2'))
-#     self.rt.add_widget(S3A2(name='A2'))
-#     self.rt.add_widget(Screen4(name='A3'))
-#     self.rt.add_widget(Screen5(name='A4'))
-#     self.rt.add_widget(Screen6(name='A5'))
-#     self.rt.add_widget(Screen7(name='A6'))
-#     self.rt.add_widget(Screen8(name='A7'))
-#     self.rt.add_widget(Screen9(name='A8'))
-#     self.rt.add_widget(CRS(name='CRR'))
 #main App
 class FPR(App):
-    from Dates2Hours import D2Hfx, AM
-    # icon = 'PFPICON.ico'
-    global pbar
-    D2HSD = 0
-    D2HED = 0
-    # = 0
-    pbar =0
-    # def datevalidator(obj):
-    def pbaru(obj):
-        global pbar
-        if(pbar < 100):
-            pbar +=10
-            obj.root.get_screen('FinancialProgramHome').ids.pb.value = pbar
-        else:
-            
-            pbar = 0
-            obj.root.get_screen('FinancialProgramHome').ids.pb.value = pbar
-        return
-
-    def pbar2(obj):
-        global pbar
-        if(pbar < 100):
-            pbar +=10
-            # obj.root.get_screen('FinancialProgramHome').ids.pb.value = pbar
-        else:
-            
-            pbar = 0
-            # obj.root.get_screen('FinancialProgramHome').ids.pb.value = pbar
-        return pbar
-        
-        # return pbar
-
-    def ast(obj):
-        obj.root.get_screen('FinancialProgramHome').ids.lls.text = "more"
-        # rt.get_screen('A3')
-
-        return
-    
+    current_title = StringProperty()
+    from Dates2Hours import D2Hfx, AM   
     def __init__ (self):
-        # cl
         super().__init__()
         self.rt = ScreenManager( transition=FadeTransition(duration=.25))
-        self.rt.add_widget(FPH(name='FinancialProgramHome'))
-        self.rt.add_widget(D2H(name='D2HA')) # name is how to navigate
-        # self.rt.add_widget(D2H(name='2'))
+        self.rt.add_widget(FPH(name='PFP_HOME'))
+        self.rt.add_widget(D2H(name='D2HA'))
         self.rt.add_widget(S3A2(name='A2'))
         self.rt.add_widget(Screen4(name='A3'))
         self.rt.add_widget(Screen5(name='A4'))
@@ -256,26 +216,11 @@ class FPR(App):
         self.rt.add_widget(Screen8(name='A7'))
         self.rt.add_widget(Screen9(name='A8'))
         self.rt.add_widget(CRS(name='CRR'))
+        self.current_title = "FINANCE HOME"
         super().run()
-        
-
-
 
     def build(self):
-        # obj.icon = 'PFPICON.ico'
-        self.title = 'Project Financial Program (PFP)'
-        
-        # obj.screens = {}
-        # obj.available_screens = sorted([
-        #     'Buttons', 'ToggleButton', 'Sliders', 'ProgressBar', 'Switches',
-        #     'CheckBoxes', 'TextInputs', 'Accordions', 'FileChoosers',
-        #     'Carousel', 'Bubbles', 'CodeInput', 'DropDown', 'Spinner',
-        #     'Scatter', 'Splitter', 'TabbedPanel + Layouts', 'RstDocument',
-        #     'Popups', 'ScreenManager'])
-            
-    
-        # obj.get_application_icon()
-
+        self.title = 'PFP'
         return self.rt
 
 if __name__ == '__main__':
