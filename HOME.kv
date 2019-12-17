@@ -1,0 +1,32 @@
+<FPH>: 
+    id: fz
+    
+    BoxLayout:
+        orientation: 'vertical'
+        NavBar_ActionBar:
+            id:abar
+        Label:
+            id: home_label
+            text: "Welcome to FMP"
+        Label:
+            id: home_label
+            text: "- A Project Management Assistant -"
+    # Button:
+    #     text: 'Financial Program Home'
+    #     on_release: fz.ast2()
+    # Button:
+    #     text: 'Financial Program Home'
+    #     on_release: app.ast()
+    # Button:
+    #     text: 'Progress Bar Test'
+    #     on_release: app.pbaru()
+    # Label:
+    #     id:lls
+    #     text: "Test"
+        ProgressBar:
+            id: pb
+            size_hint_x: 1
+            size_hint_y: None
+            height: '48dp'
+            value: 0
+            # value: (fz.bar() * 10) % 100

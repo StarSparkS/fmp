@@ -1,0 +1,79 @@
+<NavBar_ActionBar@ActionBar>:
+    id:av
+    ActionView:
+        # use_separator: True
+        HiddenIcon_ActionPrevious:
+            id: hd
+        ActionGroup:
+            id: sp
+            mode: 'spinner'
+            text: 'NAV'
+            ActionButton:
+                text: 'Home'
+                on_release: app.root.current = 'PFP_HOME'; app.current_title = "FINANCE HOME"
+            ActionButton:
+                text: 'DatesToHours'
+                on_release: app.root.current = 'D2HA'; app.current_title = "DATES TO HOURS (D2H) APP" # av.ids.sla.text = '-- D2H --'  
+            ActionButton:
+                text: 'APP 2 TBD'
+                on_release:  app.root.current = 'A2'; app.current_title = "A2"
+            ActionButton:
+                text: 'APP 3 TBD'
+                on_release:  app.root.current = 'A3'; app.current_title = "A3"
+            ActionButton:
+                text: 'APP 4 TBD'
+                on_release:  app.root.current = 'A4'; app.current_title = "A4"
+            ActionButton:
+                text: 'APP 5 TBD'
+                on_release:  app.root.current = 'A5';app.current_title = "A5"
+            ActionButton:
+                text: 'APP 6 TBD'
+                on_release:  app.root.current = 'A6';app.current_title = "A6"
+            ActionButton:
+                text: 'APP 7 TBD'
+                on_release:  app.root.current = 'A7';app.current_title = "A7"
+            ActionButton:
+                text: 'APP 8 TBD'
+                on_release:  app.root.current = 'A8';app.current_title = "A8"
+            ActionButton:
+                text: 'CREDITS'
+                on_release:  app.root.current = 'CRR';app.current_title = "CREDITS"
+        ActionGroup:
+            id: set
+            mode: 'spinner'
+            text: 'SETTINGS'
+            ActionButton:
+                text: 'App Settings'
+                on_press: app.open_settings()
+            ActionButton:
+                text: 'TBD'
+        ActionLabel:
+            bold: True 
+            id: sla
+            text: app.current_title
+            color: 0, .6, .6, .5
+            # canvas.before:
+            #     # Color:
+            #     #     rgba: .4,0,0,.2
+            #     Rectangle: 
+            #         pos: self.pos
+            #         size: self.size
+        ActionLabel:
+            id: sep
+            # width: av.width - av.ids.hd.width - av.ids.ex.width - av.ids.set.width - av.ids.sp.width- (len(app.current_title)*20)
+            color: 1,1,1,1
+        ActionButton:
+            id: ex
+            text: 'EXIT'
+            on_press: app.get_running_app().stop()     
+<HiddenIcon_ActionPrevious@ActionPrevious>:
+    # title: 'wow'   # app.title if app.title is not None else 'Action Previous'
+    # title: ('' if not app.current_title else ' - {}'.format(app.current_title))
+    # title: 'HOME' if not (app.current_title) else app.current_title # ('' if not app.current_title else ' - {}'.format(app.current_title))
+    with_previous: False
+    # color: 0,.6,.6,.5
+    app_icon: ''
+    app_icon_width: 0
+    app_icon_height: 0
+    size_hint_x: None
+    width: len(self.title)*10
