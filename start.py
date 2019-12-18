@@ -1,5 +1,5 @@
 from kivy.config import Config
-Config.set('kivy','window_icon', "")
+Config.set('kivy','window_icon', 'ico/fmp3.png')
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.button import Button
@@ -15,34 +15,41 @@ from decimal import *
 from kivy.uix.textinput import TextInput
 from datetime import date, timedelta, datetime
 from kivy.properties import NumericProperty, StringProperty, BooleanProperty,ListProperty
+import os
 
 Builder.load_file('fpr_kivy.kv')
 Builder.load_file('D2H_SCREEN.kv')
 Builder.load_file('HOME.kv')
 Builder.load_file('navbar.kv')
 Builder.load_string(""" 
-<S3A2>: 
+<MIC>: 
     BoxLayout: 
         orientation: 'vertical'
         NavBar_ActionBar:
             id:abar
-        # Accordion:
-        #     orientation: 'horizontal'
-        #     AccordionItem:
-        #         title: 'File Selection'
-        #         Label:
-        #             text: 'This is a label fit to the content view'
-        #             text_size: self.width, None
-        #     AccordionItem:
-        #         title: 'Panel 2'
-        #         Button:
-        #             text: 'A button, what else?'
+        Accordion:
+            orientation: 'horizontal'
+            AccordionItem:
+                title: 'Select Existing Materiel List'
+                BoxLayout:
+                    orientation: 'vertical'
+                    FileChooserIconView:
+                        id: filechooser
+                        # view_mode: 'icon'
+                        path: app.pathfinder()
+                    # Label:
+                    #     text: 'This is a label fit to the content view'
+                    #     text_size: self.width, None
+            AccordionItem:
+                title: 'Panel 2'
+                Button:
+                    text: 'A button, what else?'
 
-        #     AccordionItem:
-        #         title: 'Panel 3'
-        #         Label:
-        #             text: 'This is a label fit to the content view'
-        #             text_size: self.width, None
+            AccordionItem:
+                title: 'Panel 3'
+                Label:
+                    text: 'This is a label fit to the content view'
+                    text_size: self.width, None
         ProgressBar:
             id: pb
             height: '10dp'
@@ -54,9 +61,9 @@ Builder.load_string("""
 #Class Declaration
 #
 class FPH(Screen): #Home Page
-    def ast2(obj):
-        obj.ids.lls.text = "gotcha"
-    # pass
+    # def ast2(obj):
+    #     obj.ids.lls.text = "gotcha"
+    pass
 #
 # every action creates a dynamic screen?
 #     
@@ -84,6 +91,11 @@ class D2H(Screen): #Calculate dates/hours to be funded in a range
         obj.sd = ""
         obj.EDI_valid = 0
         obj.ed = ""
+        obj.r_days =0
+        obj.r_hours = 0
+        obj.a_days =0
+        obj.a_hours = 0
+        obj.ftr = 1
         obj.ids.startDateInput.disabled = 0
         obj.ids.endDateInput.disabled = 0
         obj.ids.startDateInput.text = 'Enter Start Date (MM/DD/YYYY)'
@@ -178,23 +190,21 @@ class D2H(Screen): #Calculate dates/hours to be funded in a range
         obj.ftr = obj.ids.s3.value
         obj.ftr = Decimal(obj.ftr)
         obj.ftr = round(obj.ftr,2)
-        obj.ids.stp.text = str(round(n*100)) + '%' #str(round(Decimal(s3), 1)) 
+        obj.ids.stp.text = str(round(obj.ftr*100)) + '%' #str(round(Decimal(s3), 1)) 
 
-class S3A2(Screen): #Calculate material costs
+class MIC(Screen): #Calculate material and infrastructure costs
     pass
-
-class Screen4(Screen): #Keys Input
+class LPI(Screen): #Keys Input Labor Columns
     pass
-
-class Screen5(Screen): #Values Inputs
+class LPI_VAL(Screen): #Values Inputs Labor Data
     pass
-class Screen6(Screen): #Cost Output
+class TVL(Screen): # Travel Costs
     pass
-class Screen7(Screen): #Cost with Fees
+class CO(Screen): #Cost Output
     pass
-class Screen8(Screen): #Budget Estimator
+class CWF(Screen): #Cost with Fees
     pass
-class Screen9(Screen): #??
+class ES(Screen): #Budget Estimator
     pass
 class CRS(Screen): #CREDITS
     pass
@@ -203,24 +213,30 @@ class CRS(Screen): #CREDITS
 class FPR(App):
     current_title = StringProperty()
     from Dates2Hours import D2Hfx, AM   
+
+    def pathfinder(self):
+        cwd = os.getcwd()
+        return cwd
+    
     def __init__ (self):
         super().__init__()
         self.rt = ScreenManager( transition=FadeTransition(duration=.25))
         self.rt.add_widget(FPH(name='PFP_HOME'))
         self.rt.add_widget(D2H(name='D2HA'))
-        self.rt.add_widget(S3A2(name='A2'))
-        self.rt.add_widget(Screen4(name='A3'))
-        self.rt.add_widget(Screen5(name='A4'))
-        self.rt.add_widget(Screen6(name='A5'))
-        self.rt.add_widget(Screen7(name='A6'))
-        self.rt.add_widget(Screen8(name='A7'))
-        self.rt.add_widget(Screen9(name='A8'))
+        self.rt.add_widget(MIC(name='MICinst'))
+        self.rt.add_widget(LPI(name='LABORin'))
+        self.rt.add_widget(LPI_VAL(name='LPIR'))
+        self.rt.add_widget(TVL(name='TVLinst'))
+        self.rt.add_widget(CO(name='COinst'))
+        self.rt.add_widget(CWF(name='CWFin'))
+        self.rt.add_widget(ES(name='ESin'))
         self.rt.add_widget(CRS(name='CRR'))
         self.current_title = "FINANCE HOME"
         super().run()
 
     def build(self):
-        self.title = 'PFP'
+        self.title = 'FMP - A Management Assistant'
+        # self.icon = 'ico/icon3.png'
         return self.rt
 
 if __name__ == '__main__':

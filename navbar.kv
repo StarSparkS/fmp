@@ -12,31 +12,31 @@
                 text: 'Home'
                 on_release: app.root.current = 'PFP_HOME'; app.current_title = "FINANCE HOME"
             ActionButton:
-                text: 'DatesToHours'
+                text: 'Dates > Hours'
                 on_release: app.root.current = 'D2HA'; app.current_title = "DATES TO HOURS (D2H) APP" # av.ids.sla.text = '-- D2H --'  
             ActionButton:
-                text: 'APP 2 TBD'
-                on_release:  app.root.current = 'A2'; app.current_title = "A2"
+                text: 'M/I Costs'
+                on_release:  app.root.current = 'MICinst'; app.current_title = "Material/Infrastructure Costs"
             ActionButton:
-                text: 'APP 3 TBD'
-                on_release:  app.root.current = 'A3'; app.current_title = "A3"
+                text: 'Team Input'
+                on_release:  app.root.current = 'LABORin'; app.current_title = "L/P/T Input"
             ActionButton:
-                text: 'APP 4 TBD'
-                on_release:  app.root.current = 'A4'; app.current_title = "A4"
+                text: 'Team Lookup'
+                on_release:  app.root.current = 'LPIR'; app.current_title = "Labor Lookup"
             ActionButton:
-                text: 'APP 5 TBD'
-                on_release:  app.root.current = 'A5';app.current_title = "A5"
+                text: 'Travel'
+                on_release:  app.root.current = 'TVLinst';app.current_title = "TRAVEL"
             ActionButton:
-                text: 'APP 6 TBD'
-                on_release:  app.root.current = 'A6';app.current_title = "A6"
+                text: 'Calculator'
+                on_release:  app.root.current = 'COinst';app.current_title = "Cost Calculator"
             ActionButton:
-                text: 'APP 7 TBD'
-                on_release:  app.root.current = 'A7';app.current_title = "A7"
+                text: 'FinalOutput'
+                on_release:  app.root.current = 'CWFin';app.current_title = "Output Details"
             ActionButton:
-                text: 'APP 8 TBD'
-                on_release:  app.root.current = 'A8';app.current_title = "A8"
+                text: 'Estimate'
+                on_release:  app.root.current = 'ESin';app.current_title = "Estimate Future Costs"
             ActionButton:
-                text: 'CREDITS'
+                text: 'Credits'
                 on_release:  app.root.current = 'CRR';app.current_title = "CREDITS"
         ActionGroup:
             id: set
@@ -51,7 +51,7 @@
             bold: True 
             id: sla
             text: app.current_title
-            color: 0, .6, .6, .5
+            color: 0, .6, .6, .7
             # canvas.before:
             #     # Color:
             #     #     rgba: .4,0,0,.2

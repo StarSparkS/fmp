@@ -1,16 +1,23 @@
 <FPH>: 
     id: fz
-    
     BoxLayout:
         orientation: 'vertical'
         NavBar_ActionBar:
             id:abar
         Label:
+            size_hint: (1, .2)     
             id: home_label
-            text: "Welcome to FMP"
+            valign: 'middle'
+            text: "Welcome to the Financial Management Program (FMP)"
+        Image:
+            source: 'ico/fmp.png'
+            size: self.texture_size
         Label:
+            size_hint: (1, .1)     
             id: home_label
-            text: "- A Project Management Assistant -"
+            italic: True
+            text: "press the NAV button to access apps"
+     
     # Button:
     #     text: 'Financial Program Home'
     #     on_release: fz.ast2()
