@@ -23,33 +23,74 @@ Builder.load_file('HOME.kv')
 Builder.load_file('navbar.kv')
 Builder.load_string(""" 
 <MIC>: 
+    id: micwid
     BoxLayout: 
         orientation: 'vertical'
         NavBar_ActionBar:
             id:abar
         Accordion:
-            orientation: 'horizontal'
+            id: acc
+            orientation: 'horizontal'           
             AccordionItem:
                 title: 'Select Existing Materiel List'
                 BoxLayout:
                     orientation: 'vertical'
                     FileChooserIconView:
+                        size_hint_x: 1
                         id: filechooser
                         # view_mode: 'icon'
                         path: app.pathfinder()
-                    # Label:
-                    #     text: 'This is a label fit to the content view'
-                    #     text_size: self.width, None
+                        on_selection: micwid.show(filechooser.selection)
+                    Label: 
+                        id: ll
+                        size_hint_y: .1
+                        text: "status: no selection made"
+                    BoxLayout:
+                        size_hint_y: .1
+                        Button:
+                            text: "Press to reset file selector"
+                            on_release: micwid.ids.filechooser.path = app.pathfinder(); micwid.ids.ll.color = 1,1,1,1; micwid.ids.fc.disabled = False#; micwid.ids.nl.disabled = False
+                        Button:
+                            id: fc
+                            text: "Press to complete selection"
+                            on_release: micwid.ids.ll.color = 0,.6,.6,1; self.disabled = True#; micwid.ids.nl.disabled = True
+                    # Button: 
+                    #     id: nl
+                    #     size_hint_y: .1
+                    #     text: "Make a new empty list with current date YYYY_MM_DD_matlist.xls)"
+                    #     on_release: self.disabled = True; micwid.ids.fc.disabled = True
             AccordionItem:
-                title: 'Panel 2'
-                Button:
-                    text: 'A button, what else?'
-
+                id: current_list
+                title: 'Current List'
+                ScrollView:
+                    do_scroll_y: True
+                    size_hint_y: 1
+                    bar_color: .2,.6, .6, 1
+                    bar_inactive_color: 1,1,1,1
+                    bar_width: 10
+                    bar_text: "hello"
+                    BoxLayout:
+                        id:clbl
+                        size_hint_x: 2
+                        # size_hint_y: 1.0
+                        orientation: 'vertical'
+                        Label: 
+                            text: "Tool Name -SW/FW-Static/Dynamic/Formal-Annual/Perpetual	Date of Last Purchase	Cost Per Unit	Qty	Total Cost	Vendor Agent Name	Vendor #	Vendor Email	Team POC"
             AccordionItem:
-                title: 'Panel 3'
+                title: 'Analysis'
                 Label:
-                    text: 'This is a label fit to the content view'
+                    text: 'Total Cost'
                     text_size: self.width, None
+                Label:
+                    text: 'Items in Need of Renewal within 4 months'
+                Label:
+                    text: 'Static Tool Count'
+                Label:
+                    text: 'Dynamic Tool Count'
+                Label:
+                    text: 'Formal Tool Count'
+                Label:
+                    text: 'estimated cost with burden'
         ProgressBar:
             id: pb
             height: '10dp'
@@ -193,6 +234,12 @@ class D2H(Screen): #Calculate dates/hours to be funded in a range
         obj.ids.stp.text = str(round(obj.ftr*100)) + '%' #str(round(Decimal(s3), 1)) 
 
 class MIC(Screen): #Calculate material and infrastructure costs
+    def show( self, filename):
+        self.ids.ll.text = str(filename)
+    # def open(self, path, filename):
+    #     with open(os.path.join(path, filename[0])) as f:
+    #             print f.read()
+    # def selected(self, filename)
     pass
 class LPI(Screen): #Keys Input Labor Columns
     pass
@@ -236,7 +283,7 @@ class FPR(App):
 
     def build(self):
         self.title = 'FMP - A Management Assistant'
-        # self.icon = 'ico/icon3.png'
+        self.icon = 'ico/fmp3.png'
         return self.rt
 
 if __name__ == '__main__':
