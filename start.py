@@ -9,6 +9,7 @@ SlideTransition, CardTransition, SwapTransition,
 FadeTransition, WipeTransition, FallOutTransition, RiseInTransition)
 from kivy.uix.progressbar import ProgressBar
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.checkbox import CheckBox
 from kivy.lang import Builder
 from Dates2Hours import D2Hfx, AM #, D2H
 from decimal import *
@@ -16,6 +17,8 @@ from kivy.uix.textinput import TextInput
 from datetime import date, timedelta, datetime
 from kivy.properties import NumericProperty, StringProperty, BooleanProperty,ListProperty
 import os
+import csv
+import xlrd, xlwt, xlutils # (possible upgrade)
 
 Builder.load_file('fpr_kivy.kv')
 Builder.load_file('D2H_SCREEN.kv')
@@ -53,7 +56,7 @@ Builder.load_string("""
                         Button:
                             id: fc
                             text: "Press to complete selection"
-                            on_release: micwid.ids.ll.color = 0,.6,.6,1; self.disabled = True#; micwid.ids.nl.disabled = True
+                            on_release: micwid.parse(filechooser.path, filechooser.selection); micwid.ids.ll.color = 0,.6,.6,1; self.disabled = True#; micwid.ids.nl.disabled = True
                     # Button: 
                     #     id: nl
                     #     size_hint_y: .1
@@ -63,34 +66,31 @@ Builder.load_string("""
                 id: current_list
                 title: 'Current List'
                 ScrollView:
+                    id: svm
                     do_scroll_y: True
                     size_hint_y: 1
                     bar_color: .2,.6, .6, 1
                     bar_inactive_color: 1,1,1,1
                     bar_width: 10
                     bar_text: "hello"
-                    BoxLayout:
+                    GridLayout:
                         id:clbl
-                        size_hint_x: 2
+                        cols: 8
+                        # size_hint_x: 1
                         # size_hint_y: 1.0
                         orientation: 'vertical'
-                        Label: 
-                            text: "Tool Name -SW/FW-Static/Dynamic/Formal-Annual/Perpetual	Date of Last Purchase	Cost Per Unit	Qty	Total Cost	Vendor Agent Name	Vendor #	Vendor Email	Team POC"
+                        # Label: 
+                        #     id:ltxt
+                        #     text: "Tool Name -SW/FW-Static/Dynamic/Formal-Annual/Perpetual	Date of Last Purchase	Cost Per Unit	Qty	Total Cost	Vendor Agent Name	Vendor #	Vendor Email	Team POC"
             AccordionItem:
                 title: 'Analysis'
                 Label:
-                    text: 'Total Cost'
+                    text: 'Total Cost:'
                     text_size: self.width, None
                 Label:
-                    text: 'Items in Need of Renewal within 4 months'
-                Label:
-                    text: 'Static Tool Count'
-                Label:
-                    text: 'Dynamic Tool Count'
-                Label:
-                    text: 'Formal Tool Count'
-                Label:
-                    text: 'estimated cost with burden'
+                    id:cvalue
+                    text: '$0.00'
+                    text_size: self.width, None
         ProgressBar:
             id: pb
             height: '10dp'
@@ -234,25 +234,107 @@ class D2H(Screen): #Calculate dates/hours to be funded in a range
         obj.ids.stp.text = str(round(obj.ftr*100)) + '%' #str(round(Decimal(s3), 1)) 
 
 class MIC(Screen): #Calculate material and infrastructure costs
+    
+    def __init__(self, **kwargs):
+        self.rcount = 0
+        self.xwmax = 1
+        self.colvals = []
+        self.colfilter = ["PN", "LT(A|P)", "PD", "CPU", "QTY", "LC"]
+        self.totalcost = 0
+        self.cl= 0
+        super().__init__(**kwargs)
+
     def show( self, filename):
         self.ids.ll.text = str(filename)
+
+    def parse(self,path, filename):
+        matxl = xlrd.open_workbook(os.path.join(path, filename[0]))
+        mat_sheet = matxl.sheet_by_index(0)
+        self.ids.clbl.rows = mat_sheet.nrows
+        self.ids.clbl.cols = 8
+        # if mat_sheet.ncols > 10:
+        #     self.ids.clbl.size_hint_x = (mat_sheet.ncols/10)
+        for row in range(0, mat_sheet.nrows):
+            if(len(str(mat_sheet.cell(row,0).value)) > 0):
+                self.rcount +=1
+                if(self.rcount > 10):
+                    self.ids.clbl.size_hint_y = (self.rcount/10)
+                self.ids.clbl.add_widget(Label(text = (str(row))))
+                for col in range (0, mat_sheet.ncols):
+                    cell = mat_sheet.cell(row,col)
+                    if row == 0:
+                        if str(cell.value) in self.colfilter:
+                            self.colvals.append(col)
+                            if(str(cell.value)=="LC"):
+                                self.cl = col
+                    if col in self.colvals:
+                        if cell.ctype ==3:
+                            py_date = xlrd.xldate.xldate_as_datetime(cell.value, matxl.datemode)
+                            py_date = date(py_date.year, py_date.month, py_date.day)
+                            self.ids.clbl.add_widget(Label(text = (str(py_date))))
+                        else:
+                            # print (str(cell.ctype))
+                            self.ids.clbl.add_widget(Label(text = (str(cell.value))))
+                    if col == self.cl and row>0:
+                        print(cell)
+                        self.totalcost = Decimal(self.totalcost) + Decimal(str(cell.value))
+                if row == 0:
+                    self.ids.clbl.add_widget(Label(text = (str("+/-"))))
+                else:
+                    self.ids.clbl.add_widget(CheckBox(id = str(row), active = 1 ))  
+        self.ids.cvalue.text = str("$" + str(self.totalcost))
+            # print ("Cols: ")
+            # print (str(mat_sheet.ncols))
+
+        # pf = open(os.path.join(path, filename[0]))
+        # rpf = pf.read().split('\n')
+        # cpf = csv.reader(rpf)
+        # for n in cpf:
+        #     if len(str(n)) > 2:
+        #         self.rcount +=1
+        #         print (n[0])
+        #         # self.ids.ltxt.text = str(n)
+        #         self.ids.clbl.add_widget(Label(text = str(n)))
+
+        #         if len(str(n))/100 > self.xwmax:
+        #             self.ids.clbl.size_hint_x = len(str(n)) /100 
+        #             self.xwmax = len(str(n))/100 
+
+        #         if (self.rcount > 10):
+        #             self.ids.clbl.size_hint_y = (self.rcount/10)
+        # pf.close()
+
+        
+        # with open()) as stream:
+        # self.text_input.text = stream.read()
+
+    
+
     # def open(self, path, filename):
     #     with open(os.path.join(path, filename[0])) as f:
     #             print f.read()
     # def selected(self, filename)
     pass
 class LPI(Screen): #Keys Input Labor Columns
+    def __init__(self, **kwargs):
+        self.rcount = 0
+        self.xwmax = 1
+        super().__init__(**kwargs)
+
+    def show( self, filename):
+        self.ids.ll.text = str(filename)
+
     pass
 class LPI_VAL(Screen): #Values Inputs Labor Data
     pass
 class TVL(Screen): # Travel Costs
     pass
-class CO(Screen): #Cost Output
+class CALC(Screen): #Cost Output
     pass
-class CWF(Screen): #Cost with Fees
+class OT(Screen): #Output
     pass
-class ES(Screen): #Budget Estimator
-    pass
+# class ES(Screen): #Budget Estimator
+#     pass
 class CRS(Screen): #CREDITS
     pass
 
@@ -274,9 +356,9 @@ class FPR(App):
         self.rt.add_widget(LPI(name='LABORin'))
         self.rt.add_widget(LPI_VAL(name='LPIR'))
         self.rt.add_widget(TVL(name='TVLinst'))
-        self.rt.add_widget(CO(name='COinst'))
-        self.rt.add_widget(CWF(name='CWFin'))
-        self.rt.add_widget(ES(name='ESin'))
+        self.rt.add_widget(CALC(name='CALCinst'))
+        self.rt.add_widget(OT(name='OTinst'))
+        # self.rt.add_widget(ES(name='ESin'))
         self.rt.add_widget(CRS(name='CRR'))
         self.current_title = "FINANCE HOME"
         super().run()
