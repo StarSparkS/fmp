@@ -240,7 +240,9 @@ class MIC(Screen): #Calculate material and infrastructure costs
         self.xwmax = 1
         self.colvals = []
         self.colfilter = ["PN", "LT(A|P)", "PD", "CPU", "QTY", "LC"]
+        self.rc = []
         self.totalcost = 0
+        self.nrows = 0
         self.cl= 0
         super().__init__(**kwargs)
 
@@ -251,6 +253,7 @@ class MIC(Screen): #Calculate material and infrastructure costs
         matxl = xlrd.open_workbook(os.path.join(path, filename[0]))
         mat_sheet = matxl.sheet_by_index(0)
         self.ids.clbl.rows = mat_sheet.nrows
+        self.nrows = int(mat_sheet.nrows)
         self.ids.clbl.cols = 8
         # if mat_sheet.ncols > 10:
         #     self.ids.clbl.size_hint_x = (mat_sheet.ncols/10)
@@ -276,13 +279,44 @@ class MIC(Screen): #Calculate material and infrastructure costs
                             # print (str(cell.ctype))
                             self.ids.clbl.add_widget(Label(text = (str(cell.value))))
                     if col == self.cl and row>0:
-                        print(cell)
-                        self.totalcost = Decimal(self.totalcost) + Decimal(str(cell.value))
+                        arow = []
+                        arow.append(str(row))
+                        rval = Decimal(cell.value)
+                        rval = round(rval, 2)
+                        arow.append(rval)
+                        # arow.append(1)
+                        # round(obj.ftr,2
+                        self.rc.append(arow)
+                        # print(cell)
+                        # self.totalcost = Decimal(self.totalcost) + Decimal(str(cell.value))
                 if row == 0:
                     self.ids.clbl.add_widget(Label(text = (str("+/-"))))
                 else:
-                    self.ids.clbl.add_widget(CheckBox(id = str(row), active = 1 ))  
+                    ck = CheckBox( id = str(row))
+                    ck.bind(active = self.costupdate)
+                    self.ids.clbl.add_widget(ck)  
+
+    def costupdate(self, ckbox, value):
+        # self.totalcost = 0
+        # print (self.rc)
+        # for n in range (0, len(self.rc)):
+        #     print (len(self.rc))
+        #     print (ckbox.id)
+        if value:
+            self.totalcost += (self.rc[int(ckbox.id)-1][1])
+        else:
+            self.totalcost -= (self.rc[int(ckbox.id)-1][1])
+
+        # if len(self.rc) > 0:
+        #     for n in range (0, len(self.rc)):
+        #         if self.ids.str(n).value:
+        #             self.totalcost += rc[n][1]
+
         self.ids.cvalue.text = str("$" + str(self.totalcost))
+        # FPR.getmatval(self)
+        # self.rt.matval = self.totalcost
+
+
             # print ("Cols: ")
             # print (str(mat_sheet.ncols))
 
@@ -307,22 +341,20 @@ class MIC(Screen): #Calculate material and infrastructure costs
         
         # with open()) as stream:
         # self.text_input.text = stream.read()
-
-    
-
-    # def open(self, path, filename):
-    #     with open(os.path.join(path, filename[0])) as f:
-    #             print f.read()
-    # def selected(self, filename)
+            # def open(self, path, filename):
+            #     with open(os.path.join(path, filename[0])) as f:
+            #             print f.read()
+            # def selected(self, filename)
     pass
-class LPI(Screen): #Keys Input Labor Columns
-    def __init__(self, **kwargs):
-        self.rcount = 0
-        self.xwmax = 1
-        super().__init__(**kwargs)
 
-    def show( self, filename):
-        self.ids.ll.text = str(filename)
+class LPI(Screen): #Keys Input Labor Columns
+    # def __init__(self, **kwargs):
+    #     self.rcount = 0
+    #     self.xwmax = 1
+    #     super().__init__(**kwargs)
+
+    # def show( self, filename):
+    #     self.ids.ll.text = str(filename)
 
     pass
 class LPI_VAL(Screen): #Values Inputs Labor Data
@@ -346,6 +378,12 @@ class FPR(App):
     def pathfinder(self):
         cwd = os.getcwd()
         return cwd
+
+    def getmatval(self):
+        # root.manager.get_screen('MICinst').totalcost
+        matval = self.rt.get_screen('MICinst').totalcost
+        print(matval)
+        return str(matval)
     
     def __init__ (self):
         super().__init__()
