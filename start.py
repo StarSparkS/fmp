@@ -9,6 +9,7 @@ SlideTransition, CardTransition, SwapTransition,
 FadeTransition, WipeTransition, FallOutTransition, RiseInTransition)
 from kivy.uix.progressbar import ProgressBar
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.checkbox import CheckBox
 from kivy.lang import Builder
 from Dates2Hours import D2Hfx, AM #, D2H
@@ -52,7 +53,7 @@ Builder.load_string("""
                         size_hint_y: .1
                         Button:
                             text: "Press to reset file selector"
-                            on_release: micwid.ids.filechooser.path = app.pathfinder(); micwid.ids.ll.color = 1,1,1,1; micwid.ids.fc.disabled = False#; micwid.ids.nl.disabled = False
+                            on_release: app.rt.get_screen('MICinst').reset(); micwid.ids.filechooser.path = app.pathfinder(); micwid.ids.ll.color = 1,1,1,1; micwid.ids.fc.disabled = False#; micwid.ids.nl.disabled = False
                         Button:
                             id: fc
                             text: "Press to complete selection"
@@ -73,12 +74,13 @@ Builder.load_string("""
                     bar_inactive_color: 1,1,1,1
                     bar_width: 10
                     bar_text: "hello"
-                    GridLayout:
-                        id:clbl
-                        cols: 8
+                    # GridLayout:
+                    #     id:clbl
+                    # orientation: 'vertical'
+                       # cols: 8
                         # size_hint_x: 1
                         # size_hint_y: 1.0
-                        orientation: 'vertical'
+                        
                         # Label: 
                         #     id:ltxt
                         #     text: "Tool Name -SW/FW-Static/Dynamic/Formal-Annual/Perpetual	Date of Last Purchase	Cost Per Unit	Qty	Total Cost	Vendor Agent Name	Vendor #	Vendor Email	Team POC"
@@ -243,26 +245,40 @@ class MIC(Screen): #Calculate material and infrastructure costs
         self.rc = []
         self.totalcost = 0
         self.nrows = 0
-        self.cl= 0
+        self.cl= 0     
+       
         super().__init__(**kwargs)
+    
+    def reset(self):
+        self.rcount = 0
+        self.xwmax = 1
+        self.colvals = []
+        self.colfilter = ["PN", "LT(A|P)", "PD", "CPU", "QTY", "LC"]
+        self.rc = []
+        self.totalcost = 0
+        self.nrows = 0
+        self.cl= 0
+        self.ids.svm.remove_widget(self.grid)
 
-    def show( self, filename):
+
+    def show( self, filename):           
         self.ids.ll.text = str(filename)
 
     def parse(self,path, filename):
+        self.grid = GridLayout(id="clbl", cols = 8)      
         matxl = xlrd.open_workbook(os.path.join(path, filename[0]))
         mat_sheet = matxl.sheet_by_index(0)
-        self.ids.clbl.rows = mat_sheet.nrows
+        self.grid.rows = mat_sheet.nrows
         self.nrows = int(mat_sheet.nrows)
-        self.ids.clbl.cols = 8
+        self.grid.orientation = 'vertical'
         # if mat_sheet.ncols > 10:
         #     self.ids.clbl.size_hint_x = (mat_sheet.ncols/10)
         for row in range(0, mat_sheet.nrows):
             if(len(str(mat_sheet.cell(row,0).value)) > 0):
                 self.rcount +=1
                 if(self.rcount > 10):
-                    self.ids.clbl.size_hint_y = (self.rcount/10)
-                self.ids.clbl.add_widget(Label(text = (str(row))))
+                    self.grid.size_hint_y = (self.rcount/10)
+                self.grid.add_widget(Label(text = (str(row))))
                 for col in range (0, mat_sheet.ncols):
                     cell = mat_sheet.cell(row,col)
                     if row == 0:
@@ -274,10 +290,10 @@ class MIC(Screen): #Calculate material and infrastructure costs
                         if cell.ctype ==3:
                             py_date = xlrd.xldate.xldate_as_datetime(cell.value, matxl.datemode)
                             py_date = date(py_date.year, py_date.month, py_date.day)
-                            self.ids.clbl.add_widget(Label(text = (str(py_date))))
+                            self.grid.add_widget(Label(text = (str(py_date))))
                         else:
                             # print (str(cell.ctype))
-                            self.ids.clbl.add_widget(Label(text = (str(cell.value))))
+                            self.grid.add_widget(Label(text = (str(cell.value))))
                     if col == self.cl and row>0:
                         arow = []
                         arow.append(str(row))
@@ -290,11 +306,12 @@ class MIC(Screen): #Calculate material and infrastructure costs
                         # print(cell)
                         # self.totalcost = Decimal(self.totalcost) + Decimal(str(cell.value))
                 if row == 0:
-                    self.ids.clbl.add_widget(Label(text = (str("+/-"))))
+                    self.grid.add_widget(Label(text = (str("+/-"))))
                 else:
                     ck = CheckBox( id = str(row))
                     ck.bind(active = self.costupdate)
-                    self.ids.clbl.add_widget(ck)  
+                    self.grid.add_widget(ck)  
+        self.ids.svm.add_widget(self.grid)
 
     def costupdate(self, ckbox, value):
         # self.totalcost = 0
